@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- QWeb Reports -->
+        <!-- NAME & FILE_NAME should be the same -->
+        <report
+                id="report_three"
+                model="unit.reservation"
+                report_type="qweb-pdf"
+                string="أستمارة حجز وحدة"
+                name="acar_report_custom.temp_report_three"
+                file="acar_report_custom.temp_report_three"
+        />
+
+        <template id="temp_report_three">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.internal_layout">
+                        <!-- <t t-call="report.external_layout"> -->
+                        <div class="page">
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:right;color:black;">
+                                    ..../...../.....:تاريخ الأستمارة
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:center;color:black;font-weight: bold;">
+                                    استمارة حجز وحدة
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:right;color:gold;font-weight: bold;">
+                                    بيانات العميل
+                                </p>
+                            </div>
+                            <div class="row">
+                                <div class="col-1 text-left"/>
+                                <div class="col-3 text-left">
+                                    <div>
+                                        <p>
+                                            <strong></strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-1 text-left"/>
+                                <div class="col-3 text-left">
+                                    <div>
+                                        <p>
+                                            <strong>:التوقيع</strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-1 text-right"/>
+                                <div class="col-3 text-right">
+                                    <div>
+                                        <p>
+                                            <strong><span t-esc="o.partner_id.name"/>:الاسم</strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-1 text-center"/>
+                                <div class="col-3 text-center">
+                                    <div>
+                                        <p>
+                                            <strong> <span t-esc="o.partner_id.work_address"/>:مكان العمل </strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-1 text-center"/>
+                                <div class="col-3 text-center">
+                                    <div>
+                                        <p>
+                                            <strong><span t-esc="o.partner_id.function"/>:الوظيفة</strong>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-1 text-center"/>
+                                <div class="col-3 text-center">
+                                    <div>
+                                        <p>
+                                            <strong><span t-esc="o.partner_id.notional_id"/>:الرقم القومي</strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-1 text-center"/>
+                                <div class="col-3 text-center">
+                                    <div>
+                                        <p>
+                                            <strong></strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-1 text-center"/>
+                                <div class="col-3 text-center">
+                                    <div>
+                                        <p>
+                                            <strong></strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-1 text-center"/>
+                                <div class="col-3 text-center">
+                                    <div>
+                                        <p>
+                                            <strong><span t-esc="o.partner_id.street"/>:عنوان السكن الحالي</strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:right;color:gold;font-weight: bold;">
+                                    بيانات الوحدة
+                                </p>
+                            </div>
+<!--                            <div style="font-size:30px;">-->
+<!--                                <p style="font-size:15pt;text-align:center;color:gold;font-weight: bold;">-->
+<!--                                    ........... :/النشاط-->
+<!--                                </p>-->
+<!--                            </div>-->
+                            <div class="row">
+                                <div class="col-1 text-center"/>
+                                <div class="col-3 text-center">
+                                    <div>
+                                        <p>
+                                            <strong></strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-1 text-center"/>
+                                <div class="col-3 text-center">
+                                    <div>
+                                        <p>
+                                            <strong><span t-esc="o.building.name"/>:المشروع</strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-1 text-center"/>
+                                <div class="col-3 text-center">
+                                    <div>
+                                        <p>
+                                            <strong> <span t-esc="o.region.name"/> :المنطقة</strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-1 text-center"/>
+                                <div class="col-3 text-center">
+                                    <div>
+                                        <p>
+                                            <strong></strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-1 text-center"/>
+                                <div class="col-3 text-center">
+                                    <div>
+                                        <p>
+                                            <strong><span t-esc="o.unit_code"/>:كود الوحدة</strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-1 text-center"/>
+                                <div class="col-3 text-center">
+                                    <div>
+                                        <p>
+                                            <strong><span t-esc="o.building_unit.name"/>:الدور</strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-1 text-center"/>
+                                <div class="col-3 text-center">
+                                    <div>
+                                        <p>
+                                            <strong></strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-1 text-center"/>
+                                <div class="col-3 text-center">
+                                    <div>
+                                        <p>
+                                            <strong><span t-esc="o.text1"/>:وديعة صيانة</strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-1 text-center"/>
+                                <div class="col-3 text-center">
+                                    <div>
+                                        <p>
+                                            <strong><span t-esc="o.text2"/>:باكية بدروم</strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-1 text-center"/>
+                                <div class="col-3 text-center">
+                                    <div>
+                                        <p>
+                                            <strong></strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-1 text-center"/>
+                                <div class="col-3 text-center">
+                                    <div>
+                                        <p>
+                                            <strong></strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-1 text-right"/>
+                                <div class="col-3 text-right">
+                                    <div>
+                                        <p>
+                                            <strong><span t-esc="o.payment_type"/>:طريقة الدفع</strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <br/>
+
+                                                        <style type="text/css">
+                                                            .tg {border-collapse:collapse;border-spacing:0;}
+                                                            .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial,
+                                                            sans-serif;font-size:14px;
+                                                            overflow:hidden;padding:10px 5px;word-break:normal;}
+                                                            .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial,
+                                                            sans-serif;font-size:14px;
+                                                            font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+                                                            .tg .tg-fymr{border-color:inherit;font-weight:bold;text-align:left;vertical-align:top}
+                                                            .tg .tg-7btt{border-color:inherit;font-weight:bold;text-align:center;vertical-align:top}
+                                                            .tg .tg-6ic8{border-color:inherit;font-weight:bold;text-align:right;vertical-align:top}
+                                                        </style>
+                                                        <table class="tg" style="undefined;table-layout: fixed; width: 830px">
+                                                            <colgroup>
+                                                                <col style="width: 224.2px"/>
+                                                                <col style="width: 167.2px"/>
+                                                                <col style="width: 158.2px"/>
+                                                                <col style="width: 43.2px"/>
+                                                            </colgroup>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="tg-7btt">ملاحظات</th>
+                                                                    <th class="tg-7btt">القيمة</th>
+                                                                    <th class="tg-7btt">البيان</th>
+                                                                    <th class="tg-7btt">م
+                                                                        <br/>
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="tg-6ic8">:فقط
+                                                                        <br/>
+                                                                    </td>
+                                                                    <td class="tg-7btt"><span t-esc="o.deposit"/></td>
+                                                                    <td class="tg-7btt">دفعة الحجز
+                                                                        <br/>
+                                                                    </td>
+                                                                    <td class="tg-7btt">1</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="tg-6ic8">:فقط</td>
+                                                                    <td class="tg-7btt"></td>
+                                                                    <td class="tg-7btt">دفعة مقدم التعاقد
+                                                                        <br/>
+                                                                    </td>
+                                                                    <td class="tg-7btt">2</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="tg-6ic8">:فقط</td>
+                                                                    <td class="tg-7btt"></td>
+                                                                    <td class="tg-7btt">اجمالي الاقساط
+                                                                        <br/>
+                                                                    </td>
+                                                                    <td class="tg-7btt">3</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="tg-6ic8"></td>
+                                                                    <td class="tg-7btt"></td>
+                                                                    <td class="tg-7btt">اجمالي ثمن الوحدة</td>
+                                                                    <td class="tg-7btt"></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <br/>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:right;color:black;">
+                                    يقر الطرف الاول (البائع) بان للعميل مدة سبع ايام من تاريخ الحجز تاريخ مستحق
+                                    للعميل (المشتري) لاتمام التعاقد للوحدة المكررة في استمارة الحجز وبمرور هذة المدة
+                                    تكون الاستمارة لاغية ولا يجوز له استراد قسمة استمارة الحجز.
+                                    - لا تعتبر هذة الاستمارة بمثابة عقد ولا يترتب عليها اي التزامات علي الشركة الا في
+                                    حالة اتمام التعاقد في الموعد المحدد وسداد النسبة المقررة
+                                </p>
+                            </div>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <div class="row">
+                                <div class="col-1 text-center"/>
+                                <div class="col-3 text-center">
+                                    <div>
+                                        <p>
+                                            <strong>مدير المبيعات</strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-1 text-center"/>
+                                <div class="col-3 text-center">
+                                    <div>
+                                        <p>
+                                            <strong>توقيع العميل</strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-1 text-center"/>
+                                <div class="col-3 text-center">
+                                    <div>
+                                        <p>
+                                            <strong>مسئول المبيعات</strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <br/>
+                            <div class="row">
+                                <div class="col-1 text-center"/>
+                                <div class="col-3 text-center">
+                                    <div>
+                                        <p>
+                                            <strong>ختم الشركة</strong>
+
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- QWeb Reports -->
+        <!-- NAME & FILE_NAME should be the same -->
+        <report
+                id="report_one"
+                model="ownership.contract"
+                report_type="qweb-pdf"
+                string="نموذج عقد سكني دور ارضي"
+                name="acar_report_custom.temp_report_one"
+                file="acar_report_custom.temp_report_one"
+        />
+
+        <template id="temp_report_one">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.internal_layout">
+                        <!-- <t t-call="report.external_layout"> -->
+                        <div class="page">
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:center;color:gold;font-weight: bold;">
+                                    عقد بيع ابتدائي
+                                </p>
+                            </div>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <style type="text/css">
+                                .tg {border-collapse:collapse;border-spacing:0;}
+                                .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial,
+                                sans-serif;font-size:14px;
+                                overflow:hidden;padding:13px 7px;word-break:normal;}
+                                .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial,
+                                sans-serif;font-size:14px;
+                                font-weight:normal;overflow:hidden;padding:13px 7px;word-break:normal;}
+                                .tg .tg-0lax{text-align:left;vertical-align:top}
+                                .tg .tg-rlus{font-family:Tahoma, Geneva, sans-serif
+                                !important;font-weight:bold;text-align:center;vertical-align:top}
+                                .tg .tg-etej{font-family:Tahoma, Geneva, sans-serif
+                                !important;font-size:100%;font-weight:bold;text-align:center;vertical-align:top}
+                                .tg .tg-amwm{font-weight:bold;text-align:center;vertical-align:top}
+                            </style>
+                            <table class="tg" style="undefined;table-layout: fixed; width: 830px">
+                                <colgroup>
+                                    <col style="width: 304.2px"/>
+                                    <col style="width: 212.2px"/>
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th class="tg-0lax"><span t-esc="o.name"/></th>
+                                        <th class="tg-rlus">الاسم
+                                            <br/>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="tg-0lax"><span t-esc="o.partner_id.notional_id"/></td>
+                                        <td class="tg-etej">الرقم القومي
+                                            <br/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-0lax"><span t-esc="o.partner_id.email"/></td>
+                                        <td class="tg-rlus">الايميل الرسمي
+                                            <br/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-0lax"><span t-esc="o.partner_id.phone"/></td>
+                                        <td class="tg-amwm">رقم الموبيل
+                                            <br/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-0lax"><span t-esc="o.reservation_id.name"/></td>
+                                        <td class="tg-amwm">الوحدة</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-0lax"><span t-esc="o.building"/></td>
+                                        <td class="tg-amwm">المبني</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-0lax"><span t-esc="o.floor"/></td>
+                                        <td class="tg-amwm">الدور</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-0lax"><span t-esc="o.region.name"/></td>
+                                        <td class="tg-amwm">المنطقة</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-0lax"><span t-esc="o.building_area"/></td>
+                                        <td class="tg-amwm">المساحة</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-0lax"><span t-esc="o.pricing"/></td>
+                                        <td class="tg-amwm">سعر الشقة
+                                            <br/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-0lax"><span t-esc="o.pricing"/></td>
+                                        <td class="tg-amwm">سعر باكية الجراج
+                                            <br/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-0lax"><span t-esc="o.advance_payment"/></td>
+                                        <td class="tg-amwm">اجمالي قيمة العقد
+                                            <br/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-0lax"><span t-esc="o.advance_payment_journal_id.name"/></td>
+                                        <td class="tg-amwm">رقم العقد علي CRM
+                                            <br/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:center;color:black;font-weight: bold;">
+                                    بسم الله الرحمن الرحيم
+                                    <br/>
+                                    "يا أيها الذين آمنوا أوفوا بالعقود"
+                                    <br/>
+                                    عقد بيع إبتدائي مشروط بسداد كامل الثمن
+                                    <br/>
+                                    شقة سكنية بمدينة السادات
+                                </p>
+                            </div>
+                            <br/>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:right;color:black;">
+                                    أنه في يوم ----- الموافق <span t-esc="o.date_payment"/>بمدينة السادات – محافظة المنوفية .
+                                    حرر هذا العقد فيما بين كل من :ـ
+                                    شركه عقار السادات للتطوير العقاري واداره المشروعات
+                                    ويمثلها في هذا العقد السيد / محمد كمال عبدالقوي شاهين - ويحمل بطاقة رقم قومي
+                                    <span t-esc="o.partner_id.notional_id"/>
+
+                                    -وعنوان المرسلات المختار:مقر شركه عقار السادات للتطوير العقاري واداره المشروعات
+                                    بمدينة السادات –مول سفن ستارز_الدور الثالث _مكتب رقم 10.
+                                    (طرف أول - بـائع)
+                                    والسيد / ---------------- - ويحمل بطاقة رقم قومى 0000000000000
+                                    والمقيم في -------------------------------
+                                    (طرف ثاني- مشترى)
+
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:center;color:gold;font-weight: bold;">
+                                    (( تمهـــــيد ))
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:right;color:black;">
+                                    لما كان الطرف الأول بصفته يمتلك ما هو عبارة عن قطعة أرض فضاء صالحة للبناء بمدينة
+                                    السادات من محافظة المنوفية بالمنطقة <span t-esc="o.region.name"/> (اسكان مميز) بالقطعة رقم 00 بمساحة 000 متر
+                                    ،وحدودها كما بمحضر الاستلام الصادر من جهاز المدينه ( مرفق صورته ) وحيث أن الطرف
+                                    الأول شرع في بناء المساحة المذكورة ويرغب في بيع الوحدات السكنية المملوكة له بهذه
+                                    المساحة وحيث عرض الطرف الثاني على الطرف الأول بصفته رغبته في شراء شقة رقم (00)
+                                    بالدور (<span t-esc="o.floor"/>)تحت الإنشاء وقبل بذلك الطرف الاول البائع.
+                                    وبعد أن أقر الطرفان بأهليتهما المعتبرة شرعا للتعاقد وإجراء التصرفات القانونية
+                                    وبإيجاب وقبول بينهما فقد اتفقا على الشروط والأحكام التالية :ـ
+                                    البند الأول
+                                    يعتبر التمهيد السابق جزء لا يتجزأ من هذا العقد وأقر الطرف الثانى ( المشترى) بقبول ما
+                                    ورد بهذا التمهيد وكذلك الرسومات والجداول والملحقات المرفقه بهذا العقد ووافق على شراء
+                                    الشقة السكنية رقم (00) بالدور (<span t-esc="o.floor"/>) تحت الانشاء .
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:center;color:gold;font-weight: bold;">
+                                    البند الثاني
+                                    (أيلولة الملكيه)
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:right;color:black;">
+                                    وحيث أقر الطرف الأول (البائع) بأنه يمتلك العين المباعة محل هذا العقد ملكية خالصة
+                                    مفرزة له وان التوكيل الرسمي العام رقم (00000)لسنة(2000)رسمي عام السادات مازال ساريا
+                                    ولا يجوز الغاءه، وأنه الحائز الوحيد لها دون منازعة وأنه لم يسبق له التصرف فيها بأي
+                                    تصرف ناقل للملكية للغير قبل ذلك التاريخ وله كامل الحق والصلاحية والسلطة لبيع ونقل
+                                    ملكيتها للمشترى طبقا لهذا العقد.
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:center;color:gold;font-weight: bold;">
+                                    البند الثالث
+                                    (موضوع العقد)
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:right;color:black;">
+                                    وحيث باع الطرف الأول للطرف الثانى ما هو الآتى :
+                                    <br/>
+                                    1- الشقة رقم ( ) بالدور( )، واجمالي مساحة هذه الوحده هي ( م2) فقط 0000000مترا مربعا
+                                    - تحت العجز والزيادة - بحيث يكون صافي مساحة الوحده هي ( م2) والمنافع ونسبة التحميل
+                                    هي (25%)، وذلك طبقا للرسومات الهندسية المعمارية المُعتمدة من جهاز مدينة السادات
+                                    بمشروع (0000المنطقه000) المذكور بتمهيد هذا العقد.
+                                    <br/>
+                                    2- توصيف الحديقة (خاص بالدور الارضي )
+                                    يقر الطرف الاول بأن للطرف الثاني حق الأنتفاع بحديقة داخل سور العمارة بحدود شقته ولا
+                                    يحق لأي من سكان العمارة منازعته فيها ويحق للطرف الثاني بعد موافقة الطرف الأول تغطية
+                                    حديقتة الخاصة بما يحفظ له الخصوصية وبما لا يتعارض مع الشكل العام للعمارة ولا يخالف
+                                    قوانين جهاز مدينة السادات.
+                                    <br/>
+
+                                    3- يتبع الوحدة المبيعة حصة في أرض المشروع والأجزاء المعدة للاستعمال المشترك بالمشروع
+                                    كالسلالم والمداخل والجدران وفقاً لنسبة مساحة الوحدة إلى إجمالي مساحة الوحدات بكامل
+                                    المشروع بحيث تحتسب حصة فى أرض المشروع للوحدات التى فى الرووف وما يستجد من تعليات
+                                    لاحقه تقتضي تغيير هذه النسبه
+                                    ويراعى في كل ما سبق بهذا البند احتفاظ الطرف الأول بالملكية لحين سداد الطرف الاول
+                                    كامل ثمن الوحده السكنية ولا يعد البيع نهائياً إلا بسداد كامل الثمن والمصاريف المنصوص
+                                    عليها بهذا العقد .
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:center;color:gold;font-weight: bold;">
+                                    البند الرابع
+                                    ( ما يخرج عن الملكيات المشتركة )
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:right;color:black;">
+                                    تم هذا البيع نظير ثمن إجمالي قدره (0000000) (------------ جنيها مصريا لا غير )
+                                    بالاضافة الى باكية جراج (000000) (000000جنيها مصريا لاغير ) ،سدد منها الطرف الثاني
+                                    (المشتري) للطرف الأول (البائع ) بمجلس العقد مبلغ وقدره (0000) (----- مصريا لا غير)
+                                    ويعتبر توقيع الطرف الاول على العقد مخالصه بقبض واستلام هذا المبلغ والباقي من ثمن
+                                    الشقة المباعة مبلغ وقدره (000000) (------------- جنيها مصريا لا غير) اتفق الطرفان
+                                    على أن يقوم الطرف الثاني المشتري بسدادهم علي أقساط على النحو المبين بجدول الاقساط
+                                    التالي
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:center;color:gold;font-weight: bold;">
+                                    (كشف الأقساط)
+                                </p>
+                            </div>
+                            <br/>
+                            <style type="text/css">
+                                .tg {border-collapse:collapse;border-spacing:0;}
+                                .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial,
+                                sans-serif;font-size:14px;
+                                overflow:hidden;padding:10px 5px;word-break:normal;}
+                                .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial,
+                                sans-serif;font-size:14px;
+                                font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+                                .tg .tg-amwm{font-weight:bold;text-align:center;vertical-align:top}
+                                .tg .tg-rlus{font-family:Tahoma, Geneva, sans-serif
+                                !important;font-weight:bold;text-align:center;vertical-align:top}
+                                .tg .tg-etej{font-family:Tahoma, Geneva, sans-serif
+                                !important;font-size:100%;font-weight:bold;text-align:center;vertical-align:top}
+                            </style>
+                            <table class="tg" style="undefined;table-layout: fixed; width: 830px">
+                                <colgroup>
+                                    <col style="width: 163.2px"/>
+                                    <col style="width: 400.2px"/>
+                                    <col style="width: 168.2px"/>
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th class="tg-amwm">القسط</th>
+                                        <th class="tg-rlus">القيمة
+                                            <br/>
+                                        </th>
+                                        <th class="tg-amwm">تاريخ الاستحقاق</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="tg-amwm">الاول
+                                            <br/>
+                                        </td>
+                                        <td class="tg-etej">(0000) جنيها مصريا لا غير</td>
+                                        <td class="tg-amwm">
+                                            <br/>
+                                            00/00/2000
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-amwm">الثاني</td>
+                                        <td class="tg-rlus">(0000)جنيهامصريا لا غير
+                                            <br/>
+                                        </td>
+                                        <td class="tg-amwm">
+                                            <br/>
+                                            00/00/2000
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-amwm">الثالت</td>
+                                        <td class="tg-amwm">(0000) جنيهامصريا لا غير
+                                            <br/>
+                                        </td>
+                                        <td class="tg-amwm">
+                                            <br/>
+                                            00/00/2000
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-amwm">الرابع</td>
+                                        <td class="tg-amwm">(0000) جنيها مصريا لا غير</td>
+                                        <td class="tg-amwm">
+                                            <br/>
+                                            00/00/2000
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br/>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:right;color:black;">
+                                    وتبرأ ذمة الطرف الثاني (المشتري) عن قيمة القسط المسدد بمجرد استلام ايصال موقع من
+                                    الطرف الأول بما يفيد سداد القسط في التاريخ المحدد له والمذكور بعاليه ويتم تحرير
+                                    شيكات بنكيه بباقي الأقساط المستحقه عند تاريخ الاستلام بتواريخ الاستحقاق المحدده
+                                    سابق.
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:center;color:gold;font-weight: bold;">
+                                    البند السادس
+                                    (التأخر في السداد)
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:right;color:black;">
+                                    وفي حالة تأخر الطرف الثانى عن سداد أي مبلغ في المواعيد المحددة لأكثر من 7ايام يعتبر
+                                    هذا العقد مفسوخاً من تلقاء نفسه دون حاجة إلى إنذار أو حكم قضائي مع خصم 10% من قيمة
+                                    الوحدة حتى ولو قام الطرف الثاني بعرض المبلغ عرض قانوني وساعتها يحق للطرف الأول رفض
+                                    الاستلام ،ويكون من حق الشركة إعادة التصرف في الوحدة محل البيع بالوجه الذي تراه ويكون
+                                    الاسترداد على اقساط آجله على أن يبدأ هذا الاسترداد بعد مضي شهرين من تاريخ فسخ العقد
+                                    وبذات الطريقة التي تم السداد بها ويتم استرداد باقي المبلغ بعد الخصومات المذكورة الى
+                                    الطرف الثاني وفي حالة ما اذا كان الطرف الثاني مستغلا للوحدة يلتزم بإخلائها من
+                                    الاشخاص والشواغل من تاريخ التأخير عن سداد القسط المستحق والذي يعتبر ميعادا للفسخ وفي
+                                    حالة عدم اخلاء الوحدةوالامتناع عن التسليم يلتزم بسداد مبلغ (5000) خمسة الاف جنيه عن
+                                    كل شهر مقابل الانتفاع بالوحدة.
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:center;color:gold;font-weight: bold;">
+                                    البند السابع
+                                    (الاستلام)
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:right;color:black;">
+                                    يقر الطرف الثاني انه في حالة رغبته في استلام الوحدة السكنية للتشطيب والسكن لابد من
+                                    استكمال سداد باقي ثمن الشقة كاملا أو تحرير شيكات بنكيه بباقي الأقساط في مواعيدها
+                                    المستحقة المبينة بجدول الاقساط وتعتبر حيازة الطرف الثاني للوحده المبيعه حال استلامه
+                                    لها دون سداد كامل الثمن مجرد حيازة عارضة لا يترتب له اي حقوق المالك أو الحائز قانونا
+                                    ولا تستقر له الملكيه الا بعد سداد كامل الثمن في المواعيد المقرره والالتزام بكامل
+                                    شروط العقد.
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:center;color:gold;font-weight: bold;">
+                                    البند الثامن
+                                    (ملحق العقد)
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:right;color:black;">
+                                    يلتزم الطرف الثاني المشترى بالتوقيع على ملحق العقد (لائحة اتحاد الشاغلين) بعد
+                                    الإطلاع عليها والتعهد بالإلتزام بها.
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:center;color:gold;font-weight: bold;">
+                                    البند التاسع
+                                    (حظر التصرف والتزامات المشتري)
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:right;color:black;">
+                                    1- يحظر على الطرف الثاني قبل سداد كامل الثمن التصرف او الاستغلال بكافة أنواع
+                                    التصرفات المادية أو القانونية في الوحدة موضوع العقد سواء بالبيع أو الرهن أو ترتيب أي
+                                    حق عيني أو شخصي عليها لصالح الغير أو الدخول بالوحدة المباعة كحصة عينية في أي شركة مع
+                                    الغير أو أي نوع من أنواع التصرفات دون الرجوع للطرف الأول ويقع باطلاً كل تصرف يخالف
+                                    هذا البند ولا ينفذ في حق الطرف الأول .
+                                    2- لا يجوز للطرف الثاني أن يستعمل الوحده المخصصه له الا لغرض السكن ويمتنع عليه
+                                    ممارسة اي انشطة مقلقه للراحه والصحه العامه وفقا للترخيص الصادر بهذا الشأن.
+                                    3- لا يحق للطرف الثاني المشتري إجراء أي تغيير أو تعديل بمرافق العمارة أو اي جزء منها
+                                    ويلتزم باستغلال تلك المرافق فيما أعدت من أجله لتظل دائما في حالة صالحه للاستخدام
+                                    وفقا لاشتراطات جهاز مدينة السادات.
+                                    4- يلتزم الطرف الثاني بسداد كافة الرسوم والضرائب العقارية وخلافه للعين المباعة مقابل
+                                    ملكيته وانتفاعه بالعين المباعة موضوع التعاقد وذلك بمجرد استلامها.
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:center;color:gold;font-weight: bold;">
+                                    البند العاشر
+                                    (أحكام التنازل )
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:right;color:black;">
+                                    لا يحق للطرف الثاني التنازل عن العقد أو التصرف في الوحدة قبل سداد كامل ثمنها وذلك
+                                    بشرط موافقة الطرف الأول كتابة وتغيير العقد ليصبح من الطرف الأول مباشرة للمشترى أو
+                                    المتنازل إليه الجديد بذات الشروط مع التزام المشترى أو المتنازل إليه الجديد بكافة
+                                    المبالغ المستحقة والمتبقية على الوحدة من تاريخ إجراء هذا البيع أو التنازل ويتم هذا
+                                    التنازل مقابل الالتزام بسداد مبلغ 5% (خمسة بالمائة) من إجمالي قيمه الوحدة كمصاريف
+                                    إدارية مقابل التنازل .
+                                    وفي حالة وفاة الطرف الثاني( لا قدر الله ) يحل ورثته الشرعيون محل مورثهم الطرف الثاني
+                                    في هذا العقد وتسرى عليهم كافة شروطه وأحكامه بما يولده من حقوق وما يرتبه من التزامات
+                                    شريطة أن يلتزم الورثة بإعلان رغبتهم في الاستمرار وسريان العقد بطلب مرفق به المستندات
+                                    القانونية الدالة على إثبات الوراثة وذلك في خلال شهر من تاريخ الوفاة . وفى حالة إبداء
+                                    الورثة الشرعيون رغبتهم في عدم استمرار العقد يتم فسخ العقد ورد ما سدد من ثمن بذات
+                                    الشروط الواردة بالعقد وبنفس طريقة السداد بعد خصم نسبة 2% ( اثنان بالمائة ) من إجمالي
+                                    ثمن الوحدة وذلك كمصاريف إدارية .
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:center;color:gold;font-weight: bold;">
+                                    البند الحادي عشر
+                                    (التسليم )
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:right;color:black;">
+                                    يلتزم الطرف الأول (البائع) بتسليم الشقة بالوضع المبين في ملحق العقد بالإضافة الى
+                                    تشطيب واجهات العمارة والسلم والمدخل والسور سوبر لوكس وتركيب مصعد كهربائي للعمارة
+                                    وصواعد الكهرباء واسانسير ومداخل المياه والصرف للشقةفي موعد أقصاه سنتين من تحرير
+                                    العقد وذلك بشرط ان يكون قد تم سداد جميع الأقساط السابقه على تاريخ التسليم في
+                                    المواعيد المحددهلها حيث ان أي تأخير في سداد أي قسط في ميعاده يتبعه عدم تسليم الوحده
+                                    وفي حالة وفاة الطرف الاول ( لا قدر الله ) يحل شركائة في شركة عقار السادات محله.
+                                    وفى حالة إخلال الطرف الاول بموعد التسليم فإنها تحتسب مهله نهائية 6 اشهر للتسليم
+                                    وبعدها يلتزم الطرف الأول بغرامة شهرية قدرها ( 1000 جنية ) (ألف جنية مصريا فقط لا غير
+                                    ) عن كل شهر تأخير كشرط جزائي تخصم من الأقساط المستحقة على الطرف الثاني وذلك ما لم
+                                    يكن التأخير سببه ظرفا قهريا لا يد للطرف الأول فيه وفقا لأحكام القانون المدني المصري
+                                    واتفق الطرفان على انه في حالة عدم حضور الطرف الثاني او من ينوب عنه للاستلام في خلال
+                                    30 يوما من الموعد المحدد لاستلام الوحده يعتبر مستلما لها كاملة وسليمة ومطابقة
+                                    للمواصفات المتفق عليها واعتبرت في حيازته بما يعتبر وفاء من البائع بالتزامه بتسليم
+                                    الوحده محل هذا العقد في الميعاد المحدد لذلك.
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:center;color:gold;font-weight: bold;">
+                                    البند الثاني عشر
+                                    (فسخ العقد )
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:right;color:black;">
+                                    فى حالة رغبة الطرف الثانى فى فسخ هذا العقد فعليه اتباع ما يلى :-
+                                    1. إنذار على يد محضر بالرغبة في الفسخ للطرف الأول ويتم البت في هذا الطلب خلال شهر من
+                                    تاريخ تقديمه ، وللطرف الأول حق رفض طلب الفسخ دون إبداء أسباب.
+                                    2. يتم خصم نسبة قدرها 10% ( عشرة بالمائه) من اجمالي قيمة الوحدة كمصاريف إدارية وكشرط
+                                    جزائي اتفاقي ، و يسترد الطرف الثاني باقي مستحقاته بعد بيع الوحده وبنفس طريقة سداد
+                                    المتعاقد الجديد .
+                                    3. يلتزم الطرف الثانى بتسليم أصل عقد البيع وإيصالات السداد ويحرر بالفسخ عقد منفصل .
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:center;color:gold;font-weight: bold;">
+                                    البند الثالث عشر
+                                    (العقد النهائي والتوكيل)
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:right;color:black;">
+                                    لتزم الطرف الأول (البائع) بصفته بالحضور أمام مصلحة الشهر العقاري المختصة لإنهاء
+                                    إجراءات تسجيل التوكيل والذي لا يلغى إلا بحضور الطرفين وذلك بعد التزام الطرف الثاني
+                                    بسداد الثمن كاملا وسداد 2.5% من اجمالي ثمن الوحده كمصروفات اداريه لتحرير العقد
+                                    النهائي والتوكيل.
+                                    بالاضافة الي مصاريف تركيب ( عدادات المياة – الكهرباء) ولا يبرم العقد النهائي
+                                    والتوكيل الا بعد دفع كامل المبلغ للطرف الأول.
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:center;color:gold;font-weight: bold;">
+                                    البند الرابع عشر
+                                    (المحكمه المختصه)
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:right;color:black;">
+                                    ختص محكمة السادات الابتدائيه وكذلك القضاء المستعجل بنظر المنازعات التى قد تنشأ ـ لا
+                                    قدر الله ـ بين الطرفين عن هذا العقد بخصوص تفسير اي بند من بنود هذا العقد.
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:center;color:gold;font-weight: bold;">
+                                    البند الخامس عشر
+                                    )الموطن المختار(
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:right;color:black;">
+                                    اتخذ كل طرف عنوانه الموضح بصدد هذا العقد موطنا مختارا له يصح اعلانه فيه وترسل إليه
+                                    المكاتبات و الاخطارات و الاعلانات والاوراق القضائية وعلى كل طرف اخطار باقي الاطراف
+                                    بخطاب موصى عليه مصحوب بعلم الوصول بأي تغيرات تطرأعلى موطنه المذكور بصدد العقد .
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:center;color:gold;font-weight: bold;">
+                                    البند السادس عشر
+                                    (نسخ العقد)
+                                </p>
+                            </div>
+                            <div style="font-size:30px;">
+                                <p style="font-size:15pt;text-align:right;color:black;">
+                                    حرر هذا العقد من نسختين موقعتين من الطرفين كل نسخة ستة ورقات ، وقد استلم كل طرف نسخة
+                                    موقعة منه للعمل بموجبها وتنفيذ مضمونها عند اللزوم ، وقد أذن لمن يشهد والله خير
+                                    الشاهدين.
+
+                                    (الطرف الأول ـ البائع) (الطرف الثاني ـ المشترى)
+
+                                </p>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+
+    </data>
+</odoo>
