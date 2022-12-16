@@ -37,6 +37,11 @@ class real_estate_setings(models.TransientModel):
     garage_journal = fields.Many2one('account.journal','تشطبات',config_parameter='itsys_real_estate.garage_journal')
     elevator_journal = fields.Many2one('account.journal','تآمين آعمال',config_parameter='itsys_real_estate.elevator_journal')
     other_journal = fields.Many2one('account.journal','مرافق',config_parameter='itsys_real_estate.other_journal')
+    brokers_account_id = fields.Many2one(comodel_name='account.account',string=' وسطاء',config_parameter='itsys_real_estate.brokers_account_id')
+    relations_account_id = fields.Many2one(comodel_name='account.account',string=' علاقات',config_parameter='itsys_real_estate.relations_account_id')
+    comp_account_id = fields.Many2one(comodel_name='account.account',string=' شركة',config_parameter='itsys_real_estate.comp_account_id')
+
+    
 
 class Config(models.TransientModel):
     _name = 'gmap.config'

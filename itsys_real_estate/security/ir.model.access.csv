@@ -95,4 +95,6 @@ itsys_real_estate.access_customer_payment_refund,access_customer_payment_refund,
 itsys_real_estate.access_sms_wizard,access_sms_wizard,itsys_real_estate.model_sms_wizard,base.group_user,1,0,0,0
 itsys_real_estate.access_mail_wizard,access_mail_wizard,itsys_real_estate.model_mail_wizard,base.group_user,1,0,0,0
 itsys_real_estate.access_mail_wizard_rent,access_mail_wizard_rent,itsys_real_estate.model_mail_wizard_rent,base.group_user,1,0,0,0
-access_,floor_type,model_floor_type,,1,1,1,1
+access_floor_type,floor_type,model_floor_type,,1,1,1,1
+access_wiz_create_commission,wiz_create_commission,model_wiz_create_commission,,1,1,1,1
+access_wiz_create_manual_payments,wiz_create_manual_payments,model_wiz_create_manual_payments,,1,1,1,1

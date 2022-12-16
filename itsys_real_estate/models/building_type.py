@@ -26,6 +26,8 @@ class building_type(models.Model):
     _description = "Building Type"
     
     name= fields.Char ('Type')
+    land_ratio= fields.Float   ('Load Ratio',)
+
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
 class Floor_type(models.Model):
     _name = "floor.type"

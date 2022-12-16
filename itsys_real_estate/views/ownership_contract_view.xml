@@ -68,10 +68,21 @@
                                 string="Receive Advance Payment" class="oe_highlight"/>
                         <button name="action_confirm" type="object" attrs="{'invisible':['|',('state','=','cancel'),('state','=','confirmed')]}" string="Confirm" class="oe_highlight"/>
                         <button name="action_cancel" type="object" attrs="{'invisible':['|',('state','=','cancel'),('state','=','draft')]}" string="Cancel" class="oe_highlight"/>
+                        <button name="%(itsys_real_estate.action_create_commission)d" string="Create Commission" type="action" class="oe_highlight"/>
+                        <button name="%(itsys_real_estate.create_manual_installment_template_form_action)d"
+                                string="Create Manual Payments" type="action" class="oe_highlight"/>
+
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,cancel" />
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
+                             <button type="object"
+                                    name="open_commission_moves"
+                                    class="oe_stat_button"
+                                    icon="fa-book"
+                                    attrs="{'invisible': [('commission_moves', '=', 0)]}">
+                                <field name="commission_moves" widget="statinfo"/>
+                            </button>
 
                         </div>
                         <group string="Ownership Contract Data">
@@ -132,18 +143,21 @@
                                     <field name="maintenance" required="1" attrs="{'readonly': [('state','!=','draft')]}"/>
                                     <field name="maintenance_type" class="field_rule_type" attrs="{'readonly': [('state','!=','draft')],'required': [('maintenance','>', '0')]}"/>
                                     <field name="date_maintenance" class="field_rule_type" attrs="{'readonly': [('state','!=','draft')],'required': [('maintenance','>', '0')]}"/>
+                                    <field name="maintenance_installment" class="field_rule_type" attrs="{'readonly': [('state','!=','draft')],'required': [('maintenance','>', '0')]}"/>
                                 </div>
                                 <label for="club"/>
                                 <div class="o_row">
                                     <field name="club" required="1" attrs="{'readonly': [('state','!=','draft')]}"/>
                                     <field name="club_type" class="field_rule_type" attrs="{'readonly': [('state','!=','draft')],'required': [('club','>', '0')]}"/>
                                     <field name="date_club" class="field_rule_type" attrs="{'readonly': [('state','!=','draft')],'required': [('club','>', '0')]}"/>
+                                    <field name="club_installment" class="field_rule_type" attrs="{'readonly': [('state','!=','draft')],'required': [('club','>', '0')]}"/>
                                 </div>
                                 <label for="garage"/>
                                 <div class="o_row">
                                     <field name="garage" required="1" attrs="{'readonly': [('state','!=','draft')]}"/>
                                     <field name="garage_type" class="field_rule_type" attrs="{'readonly': [('state','!=','draft')],'required': [('garage','>', '0')]}"/>
                                     <field name="date_garage" class="field_rule_type" attrs="{'readonly': [('state','!=','draft')],'required': [('garage','>', '0')]}"/>
+                                    <field name="garage_installment" class="field_rule_type" attrs="{'readonly': [('state','!=','draft')],'required': [('garage','>', '0')]}"/>
                                 </div>
                             </group>
                             <group>
@@ -152,12 +166,14 @@
                                     <field name="elevator" required="1" attrs="{'readonly': [('state','!=','draft')]}"/>
                                     <field name="elevator_type" class="field_rule_type" attrs="{'readonly': [('state','!=','draft')],'required': [('elevator','>', '0')]}"/>
                                     <field name="date_elevator" class="field_rule_type" attrs="{'readonly': [('state','!=','draft')],'required': [('elevator','>', '0')]}"/>
+                                    <field name="elevator_installment" class="field_rule_type" attrs="{'readonly': [('state','!=','draft')],'required': [('elevator','>', '0')]}"/>
                                 </div>
                                 <label for="other"/>
                                 <div class="o_row">
                                     <field name="other" required="1" attrs="{'readonly': [('state','!=','draft')]}"/>
                                     <field name="other_type" class="field_rule_type" attrs="{'readonly': [('state','!=','draft')],'required': [('other','>', '0')]}"/>
                                     <field name="date_other" class="field_rule_type" attrs="{'readonly': [('state','!=','draft')],'required': [('other','>', '0')]}"/>
+                                    <field name="other_installment" class="field_rule_type" attrs="{'readonly': [('state','!=','draft')],'required': [('other','>', '0')]}"/>
                                 </div>
                             </group>
                         </group>

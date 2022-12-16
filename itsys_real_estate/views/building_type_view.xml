@@ -8,6 +8,7 @@
             <field name="arch" type="xml">
                 <tree string="Property Status">
                     <field name="name"/>
+                    <field name="land_ratio"/>
                 </tree>
             </field>
         </record>
@@ -19,6 +20,7 @@
                     <sheet>                    
                         <group>
                             <field name="name"/>
+                            <field name="land_ratio"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                     </sheet>                    

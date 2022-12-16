@@ -38,6 +38,8 @@
         'wizard/latepayment.xml',
         'wizard/latepaymentunit.xml',
         'wizard/occupancy.xml',
+        'wizard/create_commission.xml',
+        'wizard/create_payment.xml',
 
         'views/account_move.xml',
         'views/property_image.xml',

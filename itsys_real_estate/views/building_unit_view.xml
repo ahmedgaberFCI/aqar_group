@@ -69,13 +69,15 @@
                                 <group>
                                     <group>
                                         <field name="ptype"/>
-                                        <field name="rental_fee"/>
-                                        <field name="insurance_fee"/>
+<!--                                        <field name="rental_fee"/>-->
+<!--                                        <field name="insurance_fee"/>-->
                                         <field name="status"/>
-                                        <field name="building_area"/>
+                                        <field name="land_area"/>
+                                        <field name="land_ratio"/>
+<!--                                        <field name="building_area"/>-->
                                         <field name="building_area_net"/>
                                         <field name="price_per_m"/>
-                                        <field name="land_area"/>
+<!--                                        <field name="land_area"/>-->
                                         <field name="constructed"/>
                                         <field name="air_condition"/>
                                         <field name="rooms"/>

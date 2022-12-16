@@ -48,6 +48,7 @@
                                 attrs="{'invisible':[('state','!=','confirmed')]}"
                                 string="Receive Deposit" class="oe_highlight"/>
 
+
                         <field name="state"
                                widget="statusbar"
                                statusbar_visible="draft,confirmed" />
@@ -92,9 +93,12 @@
                                 <field name="account_analytic_id" attrs="{'readonly': [('state','!=','draft')]}" />
                                 <field name="account_income"  invisible="1" attrs="{'readonly': [('state','!=','draft')]}" />
                                 <field name="company_id" groups="base.group_multi_company"/>
-                                <field name="deposit"/>
-                                <field name="advance_payment_type"/>
-                                <field name="advance_payment"/>
+                                <field name="deposit" attrs="{'readonly': [('state','!=','draft')]}" />
+                                <field name="advance_payment_type" attrs="{'readonly': [('state','!=','draft')]}" />
+                                <field name="advance_payment" attrs="{'readonly': [('state','!=','draft')]}" />
+                                <field name="expiration_date" groups="itsys_real_estate.group_real_estate_expiration_date" attrs="{'readonly': [('state','!=','draft')]}" />
+                                <field name="notify_days_before"  groups="itsys_real_estate.group_real_estate_expiration_date" attrs="{'readonly': [('state','!=','draft')]}" />
+                                <field name="notify_user_ids"   groups="itsys_real_estate.group_real_estate_expiration_date" widget="many2many_tags" attrs="{'readonly': [('state','!=','draft')]}" />
                             </group>
                         </group>
                         <separator string="Building" colspan="4"/>
@@ -151,6 +155,18 @@
             <field name="active" eval="False"/>
             <field name="interval_number">1</field>
             <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+        </record>
+
+          <record model="ir.cron" id="auto_notify_reservation_sync">
+            <field name="name">Notify  Unit Reservation</field>
+            <field name="model_id" ref="model_unit_reservation"/>
+            <field name="state">code</field>
+            <field name="code">model.check_notify()</field>
+            <field name="active" eval="False"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
             <field name="numbercall">-1</field>
             <field name="doall" eval="False"/>
         </record>

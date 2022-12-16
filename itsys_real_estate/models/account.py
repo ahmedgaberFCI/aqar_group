@@ -16,7 +16,13 @@ class account_move(models.Model):
     ownership_line_id = fields.Many2one('loan.line.rs.own', 'Ownership Installment')
     rental_line_id = fields.Many2one('loan.line.rs.rent', 'Rental Contract Installment')
     property_owner_id = fields.Many2one('res.partner', string="Owner")
+    commission_reservation_id=  fields.Many2one('ownership.contract','Commission Ownership Contract')
+
 
 class account_move_line(models.Model):
     _inherit = "account.move.line"
     commissioned= fields.Boolean('Commissioned')
+
+class account_journal(models.Model):
+    _inherit = "account.journal"
+    is_commission= fields.Boolean('Commission')

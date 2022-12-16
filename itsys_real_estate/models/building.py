@@ -48,8 +48,24 @@ class building(models.Model):
     floor= fields.Char    ('Floor', size=16)
     pricing= fields.Integer   ('Net Price',compute='_calc_price',store=True)
     balcony= fields.Integer   ('Balconies m²',)
-    building_area= fields.Float   ('Property Area m²',)
+    building_area= fields.Float   ('Property Area m²',compute='_calc_building_area',store=True)
     land_area= fields.Float   ('Land Area m²',)
+    land_ratio= fields.Float   ('Load Ratio')
+
+    @api.onchange('type')
+    def onchange_type(self):
+        self.land_ratio = self.type.land_ratio
+
+    @api.depends('land_area','land_ratio')
+    def _calc_building_area(self):
+        for rec in self:
+            if rec.land_ratio:
+                rec.building_area=rec.land_area-rec.land_ratio
+
+
+
+
+
     price_per_m= fields.Float   ('Price Per m²',)
     price_before_discount= fields.Float   ('Price',compute='_calc_price',store=True)
     discount_type= fields.Selection([('percentage','Percentage'),('amount','Amount')])
@@ -132,10 +148,10 @@ class building(models.Model):
     country_code = fields.Char(related='country_id.code', string="Country Code",store=True)
 
 
-    @api.depends('price_per_m','discount_type','discount','building_area')
+    @api.depends('price_per_m','discount_type','discount','land_area')
     def _calc_price(self):
         for rec in self:
-            rec.price_before_discount=rec.price_per_m*rec.building_area
+            rec.price_before_discount=rec.price_per_m*rec.land_area
             if rec.discount_type=='amount':
                 rec.pricing=rec.price_before_discount-rec.discount
             elif rec.discount_type=='percentage':

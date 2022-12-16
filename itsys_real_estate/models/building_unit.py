@@ -74,13 +74,21 @@ class building_unit(models.Model):
     pricing= fields.Integer   ('Selling Price',compute='_calc_price',store=True)
     balcony= fields.Integer   ('Balconies m²',)
     building_area= fields.Integer   ('Building Unit Area m²',)
-    building_area_net= fields.Integer   ('Net Area m²',)
+    building_area_net= fields.Integer   ('Net Area m²',compute='_calc_building_area_net',store=True)
     price_per_m = fields.Float('Price Per m²', )
     price_before_discount = fields.Float('Price', compute='_calc_price', store=True)
     discount_type = fields.Selection([('percentage', 'Percentage'), ('amount', 'Amount')])
     discount = fields.Float('Dsicount')
 
     land_area= fields.Integer   ('Gross Area m²',)
+    land_ratio= fields.Float   ('Load Ratio',)
+
+    @api.depends('land_area', 'land_ratio')
+    def _calc_building_area_net(self):
+        for rec in self:
+            if rec.land_ratio:
+                rec.building_area_net = rec.land_area - rec.land_ratio
+
     garden= fields.Integer   ('Garden m²',)
     terrace= fields.Integer   ('Terraces m²',)
     garage= fields.Integer ('Garage included')
@@ -110,6 +118,11 @@ class building_unit(models.Model):
     note_sales= fields.Text    ('Note Sales Folder')
     partner_id= fields.Many2one('res.partner','Owner')
     ptype= fields.Many2one('building.type','Building Unit Type')
+
+    @api.onchange('ptype')
+    def onchange_ptype(self):
+        self.land_ratio = self.ptype.land_ratio
+
     status= fields.Many2one('building.status','Unit Status')
     desc= fields.Many2one('building.desc','Description')
     partner_from= fields.Date    ('Purchase Date')
@@ -168,10 +181,10 @@ class building_unit(models.Model):
     country_code = fields.Char(related='country_id.code', string="Country Code",
   store = True)
 
-    @api.depends('price_per_m', 'discount_type', 'discount', 'building_area_net')
+    @api.depends('price_per_m', 'discount_type', 'discount', 'land_area')
     def _calc_price(self):
         for rec in self:
-            rec.price_before_discount = rec.price_per_m * rec.building_area_net
+            rec.price_before_discount = rec.price_per_m * rec.land_area
             if rec.discount_type == 'amount':
                 rec.pricing = rec.price_before_discount - rec.discount
             elif rec.discount_type == 'percentage':

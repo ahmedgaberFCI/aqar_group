@@ -25,6 +25,7 @@ from odoo import api, fields, models
 from odoo.tools.translate import _
 from datetime import datetime, date,timedelta as td
 from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
 
 class ownership_contract(models.Model):
     _name = "ownership.contract"
@@ -121,21 +122,27 @@ class ownership_contract(models.Model):
     maintenance = fields.Float(string='وديعة صيانة', digits='Product Price')
     date_maintenance= fields.Date('تاريخ وديعة صيانة')
     maintenance_type = fields.Selection([('percentage', 'Percentage'), ('amount', 'Amount')],)
+    maintenance_installment = fields.Boolean(string=' Installment',)
+
     club = fields.Float(string='تصرفات عقارية', digits='Product Price')
     date_club= fields.Date('تاريخ تصرفات عقارية ')
     club_type = fields.Selection([('percentage', 'Percentage'), ('amount', 'Amount')],)
+    club_installment = fields.Boolean(string=' Installment',)
 
     garage = fields.Float(string='تشطبات', digits='Product Price')
     date_garage= fields.Date('تاريخ تشطبات')
     garage_type = fields.Selection([('percentage', 'Percentage'), ('amount', 'Amount')],)
+    garage_installment = fields.Boolean(string=' Installment',)
 
     elevator = fields.Float(string='تآمين آعمال', digits='Product Price')
     date_elevator= fields.Date(' تاريخ تآمين آعمال')
     elevator_type = fields.Selection([('percentage', 'Percentage'), ('amount', 'Amount')],)
+    elevator_installment = fields.Boolean(string=' Installment',)
 
     other = fields.Float(string='مرافق', digits='Product Price')
     date_other= fields.Date(' تاريخ مرافق')
     other_type = fields.Selection([('percentage', 'Percentage'), ('amount', 'Amount')],)
+    other_installment = fields.Boolean(string=' Installment',)
 
     deposit = fields.Float('Deposit', digits=(16, 2), )
     advance_payment_type = fields.Selection([('percentage', 'Percentage'), ('amount', 'Amount')],
@@ -145,6 +152,35 @@ class ownership_contract(models.Model):
     advance_payment_date = fields.Date(' Advance Payment Date')
     advance_payment_journal_id = fields.Many2one('account.journal', string='Advance Payment Journal')
     advance_payment_payment_id = fields.Many2one('account.payment', string='Advance Payment ')
+    commission_moves= fields.Integer(compute='_calc_commission_moves', string='Commission Moves')
+
+    @api.constrains('loan_line','pricing')
+    def check_loan_line(self):
+        for rec in self:
+            other = rec.other if rec.other_type == 'amount' else (rec.pricing) * (rec.other / 100)
+            maintenance = rec.maintenance if rec.maintenance_type == 'amount' else (rec.pricing) * (rec.maintenance / 100)
+            club = rec.club if rec.club_type == 'amount' else (rec.pricing) * (rec.club / 100)
+            garage = rec.garage if rec.garage_type == 'amount' else (rec.pricing) * (rec.garage / 100)
+            elevator = rec.elevator if rec.elevator_type == 'amount' else (rec.pricing) * (rec.elevator / 100)
+            pricing= rec.pricing+other+maintenance+club+garage+elevator
+
+            if rec.amount_total>pricing:
+                raise ValidationError("الاقساط آكبر من سعر الوحدة")
+
+
+    def _calc_commission_moves(self):
+        moves = self.env['account.move'].search([('commission_reservation_id', '=', self.id)])
+        self.commission_moves = len(moves)
+
+    def open_commission_moves(self):
+        action = self.env.ref('account.action_move_journal_line')
+        result = action.read()[0]
+        result['domain'] = [('commission_reservation_id', '=', self.id)]
+        return result
+
+
+
+
 
 
     def action_receive_deposit(self):
@@ -242,7 +278,9 @@ class ownership_contract(models.Model):
 
                 return {'domain': {'building_unit': [('id', 'in', unit_ids)]}}
 
-    @api.onchange('template_id','date_payment','pricing','date_maintenance','date_club','date_garage','date_elevator','date_other','advance_payment','advance_payment_type')
+    @api.onchange('template_id','date_payment','pricing','date_maintenance','date_club','date_garage',
+                  'date_elevator','date_other',
+                  'advance_payment','advance_payment_type')
     def onchange_tmpl(self):
         if self.template_id:
             self.loan_line=[]
@@ -389,26 +427,99 @@ class ownership_contract(models.Model):
             loan_amount=(pricing/float(mons))*repetition
             m=0
             while m<mons:
-                print("D>D>>D",self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.club_journal'))
-                loan_lines.append((0,0,{'number':ind,'journal_id':int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.income_journal')),'amount':loan_amount,'date': first_date,'name':_('Loan Installment')}))
+                loan_lines.append((0,0,{'number':ind,'journal_id':int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.income_journal')),
+                                        'amount':loan_amount,'date': first_date,'name':_('Loan Installment')}))
                 ind+=1
                 first_date = self.add_months(first_date, repetition)
                 m+=repetition
             if self.club:
-                loan_lines.append((0,0,{'number':ind,'journal_id':int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.club_journal')),'amount':self.club if self.club_type=='amount' else (self.pricing)*(self.club/100),'date': self.date_club,'name':_('تصرفات عقارية')}))
-                ind += 1
+                if self.club_installment==False:
+                    loan_lines.append((0,0,{'number':ind,'journal_id':int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.club_journal')),
+                                            'amount':(self.club if self.club_type=='amount' else (self.pricing)*(self.club/100) / float(mons)) * repetition,'date': self.date_club,'name':_('تصرفات عقارية')}))
+                    ind += 1
+                else:
+                    _m = 0
+                    _first_date=self.date_club
+                    _amount = ((self.club if self.club_type=='amount' else (self.pricing)*(self.club/100)) / float(mons)) * repetition
+                    while _m < mons:
+                        loan_lines.append((0, 0, {'number': ind, 'journal_id': int(
+                            self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.club_journal')),
+                                                  'amount':_amount, 'date':  _first_date, 'name':_('تصرفات عقارية')}))
+                        ind += 1
+                        _first_date = self.add_months(_first_date, repetition)
+                        _m += repetition
+
             if self.maintenance:
-                loan_lines.append((0,0,{'number':ind,'journal_id':int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.maintenance_journal')),'amount':self.maintenance if self.maintenance_type=='amount' else (self.pricing)*(self.maintenance/100),'date': self.date_maintenance,'name':_('وديعة صيانة')}))
-                ind += 1
+                if self.maintenance_installment==False:
+                    loan_lines.append((0,0,{'number':ind,'journal_id':int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.maintenance_journal')),'amount':self.maintenance if self.maintenance_type=='amount' else (self.pricing)*(self.maintenance/100),'date': self.date_maintenance,'name':_('وديعة صيانة')}))
+                    ind += 1
+                else:
+                    _m = 0
+                    _first_date = self.date_maintenance
+                    _amount = ((self.maintenance if self.maintenance_type == 'amount' else (self.pricing) * (self.maintenance / 100)) / float(mons)) * repetition
+                    while _m < mons:
+                        loan_lines.append((0, 0, {'number': ind, 'journal_id': int(
+                            self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.maintenance_journal')),
+                                                  'amount':_amount ,
+                                                  'date':_first_date, 'name': _('وديعة صيانة')}))
+
+                        ind += 1
+                        _first_date = self.add_months(_first_date, repetition)
+                        _m += repetition
+
             if self.garage:
-                loan_lines.append((0,0,{'number':ind,'journal_id':int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.garage_journal')),'amount':self.garage if self.garage_type=='amount' else (self.pricing)*(self.garage/100),'date': self.date_garage,'name':_('تشطبات')}))
-                ind += 1
+                if self.garage_installment==False:
+                    loan_lines.append((0,0,{'number':ind,'journal_id':int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.garage_journal')),'amount':self.garage if self.garage_type=='amount' else (self.pricing)*(self.garage/100),'date': self.date_garage,'name':_('تشطبات')}))
+                    ind += 1
+                else:
+                    _m = 0
+                    _first_date = self.date_garage
+                    _amount = ((self.garage if self.garage_type == 'amount' else (self.pricing) * (self.garage / 100)) / float(mons)) * repetition
+                    while _m < mons:
+                        loan_lines.append((0, 0, {'number': ind, 'journal_id': int(
+                            self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.garage_journal')),
+                                                  'amount': _amount,
+                                                  'date': _first_date, 'name': _('تشطبات')}))
+
+                        ind += 1
+                        _first_date = self.add_months(_first_date, repetition)
+                        _m += repetition
+
             if self.elevator:
-                loan_lines.append((0,0,{'number':ind,'journal_id':int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.elevator_journal')),'amount':self.elevator if self.elevator_type=='amount' else (self.pricing)*(self.elevator/100),'date': self.date_elevator,'name':_('تآمين آعمال')}))
-                ind += 1
+                if self.elevator_installment==False:
+                    loan_lines.append((0,0,{'number':ind,'journal_id':int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.elevator_journal')),'amount':self.elevator if self.elevator_type=='amount' else (self.pricing)*(self.elevator/100),'date': self.date_elevator,'name':_('تآمين آعمال')}))
+                    ind += 1
+                else:
+                    _m = 0
+                    _first_date = self.date_elevator
+                    _amount = ((self.elevator if self.elevator_type == 'amount' else ( self.pricing) * (self.elevator / 100)) / float(mons)) * repetition
+                    while _m < mons:
+                        loan_lines.append((0, 0, {'number': ind, 'journal_id': int(
+                            self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.elevator_journal')),
+                                                  'amount': _amount,
+                                                  'date': _first_date, 'name': _('تآمين آعمال')}))
+
+                        ind += 1
+                        _first_date = self.add_months(_first_date, repetition)
+                        _m += repetition
+
             if self.other:
-                loan_lines.append((0,0,{'number':ind,'journal_id':int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.other_journal')),'amount':self.other if self.other_type=='amount' else (self.pricing)*(self.other/100),'date': self.date_other,'name':_('مرافق')}))
-                ind+=1
+                if self.other_installment==False:
+                    loan_lines.append((0,0,{'number':ind,'journal_id':int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.other_journal')),'amount':self.other if self.other_type=='amount' else (self.pricing)*(self.other/100),'date': self.date_other,'name':_('مرافق')}))
+                    ind+=1
+                else:
+                    _m = 0
+                    _first_date = self.date_other
+                    _amount = (( self.other if self.other_type == 'amount' else ( self.pricing) * (self.other / 100)) / float(mons)) * repetition
+                    while _m < mons:
+                        loan_lines.append((0, 0, {'number': ind, 'journal_id': int(
+                            self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.other_journal')),
+                                                  'amount':_amount,
+                                                  'date': _first_date, 'name': _('مرافق')}))
+
+                        ind += 1
+                        _first_date = self.add_months(_first_date, repetition)
+                        _m += repetition
 
         return loan_lines
 

@@ -40,6 +40,7 @@ class unit_reservation(models.Model):
         rent_ids = rent_obj.search([('reservation_id', '=', self.id)])
         self.contract_count_rent = len(rent_ids)
 
+
     def _deposit_count(self):
         payment_obj = self.env['account.payment']
         payment_ids = payment_obj.search([('reservation_id', '=', self.id)])
@@ -87,6 +88,43 @@ class unit_reservation(models.Model):
     advance_payment_type = fields.Selection([('percentage', 'Percentage'), ('amount', 'Amount')],
                                             'Advance Payment Type')
     advance_payment= fields.Float('Advance Payment')
+    expiration_date = fields.Date(string='Expiration Date')
+    notify_days_before = fields.Integer(string='Notify Before Days')
+    notifed = fields.Boolean()
+    notify_user_ids = fields.Many2many( comodel_name='res.users', string='Notify Users')
+
+    def create_expiration_reservation_activity(self,user, res_id, note, expiration_date):
+        activity_to_do = self.env.ref('mail.mail_activity_data_todo').id
+        model_id = self.env['ir.model']._get('unit.reservation').id
+        activity = self.env['mail.activity']
+        act_dct = {
+            'activity_type_id': activity_to_do,
+            'note': note,
+            'user_id': user,
+            'res_id': res_id,
+            'res_model_id': model_id,
+            'date_deadline': expiration_date
+        }
+        activity.sudo().create(act_dct)
+        return True
+
+    def check_notify(self):
+        for rec in self.env['unit.reservation'].sudo().search([('state','=','confirmed')]):
+            if rec.expiration_date>=datetime.now().date():
+                if rec.expiration_date==datetime.now().date():
+                    rec.write({'state': 'canceled'})
+                    rec.building_unit.write({'state': 'free'})
+            if rec.notifed == False:
+                if (rec.expiration_date - datetime.now().date()).days == rec.notify_days_before:
+                    for user in rec.notify_user_ids:
+                        rec.create_expiration_reservation_activity(user.id, rec.id, rec.name, rec.expiration_date)
+                    rec.write({'notifed': True})
+
+
+
+
+    
+    
 
     def unlink(self):
         if self.state !='draft':

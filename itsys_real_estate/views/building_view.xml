@@ -77,6 +77,7 @@
                                 <field name="floor_type"/>
                                 <field name="status"/>
                                 <field name="land_area"/>
+                                <field name="land_ratio"/>
                                 <field name="building_area"/>
                                 <field name="price_per_m"/>
                                 <field name="constructed"/>
