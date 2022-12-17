@@ -283,7 +283,7 @@ class ownership_contract(models.Model):
                   'advance_payment','advance_payment_type')
     def onchange_tmpl(self):
         if self.template_id or 1==1:
-            self.loan_line=[]
+            # self.loan_line=[]
             loan_lines=self._prepare_lines(self.date_payment)
             self.loan_line= loan_lines
 
@@ -397,7 +397,7 @@ class ownership_contract(models.Model):
         self.loan_line= None
         loan_lines=[]
         if self.template_id or 1==1:
-            ind=1
+            ind=len(self.loan_line) or 1
             pricing = self.pricing
             custom_adv_payment=self.advance_payment if self.advance_payment_type=='amount' else (pricing*(self.advance_payment/100))
             if custom_adv_payment>0:
