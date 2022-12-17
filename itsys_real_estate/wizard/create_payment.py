@@ -15,7 +15,7 @@ duration=[
 class CreateManualPayment(models.TransientModel):
     _name = 'wiz.create.manual.payments'
 
-    name = fields.Char('Installment Name', size=64, required=True)
+    name = fields.Char('Installment Name', size=64, required=False)
     date = fields.Date(string='Date',required=True)
     duration_month = fields.Integer('Month')
     duration_year = fields.Integer('Year')
@@ -60,7 +60,7 @@ class CreateManualPayment(models.TransientModel):
         loan_amount = (pricing / float(mons)) * repetition
         m = 0
         while m < mons:
-            loan_lines.append((0, 0, {'number': ind, 'journal_id': int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.income_journal')),'amount': loan_amount, 'date': first_date, 'name': self.name}))
+            loan_lines.append((0, 0, {'number': ind, 'journal_id': int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.income_journal')),'amount': loan_amount, 'date': first_date, 'name': self.name or ''}))
             ind += 1
             first_date = self.add_months(first_date, repetition)
             m += repetition

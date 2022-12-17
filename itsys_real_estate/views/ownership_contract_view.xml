@@ -126,7 +126,7 @@
                                 <field name="type" attrs="{'readonly': [('state','!=','draft')]}"/>
                                 <field name="status" attrs="{'readonly': [('state','!=','draft')]}"/>
                                 <field name="building_area" attrs="{'readonly': [('state','!=','draft')]}"/>
-                                <field name="template_id" attrs="{'readonly': [('state','!=','draft')]}" required="1"/>
+                                <field name="template_id" attrs="{'readonly': [('state','!=','draft')]}" required="0"/>
                                 <field name="deposit" attrs="{'readonly': [('state','!=','draft')]}" />
                                 <field name="advance_payment_type" attrs="{'readonly': [('state','!=','draft')]}" />
                                 <field name="advance_payment" attrs="{'readonly': [('state','!=','draft')]}" />
