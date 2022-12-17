@@ -394,7 +394,7 @@ class ownership_contract(models.Model):
         return move_id
 
     def _prepare_lines(self,first_date):
-        self.loan_line= None
+        # self.loan_line= None
         loan_lines=[]
         if self.template_id or 1==1:
             ind=len(self.loan_line) or 1
