@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+        <record id="aqar_construction" model="ir.module.category">
+            <field name="name">Aqar Construction</field>
+        </record>
+
+        <record id="approve_construction" model="res.groups">
+            <field name="name">Approve Construction</field>
+            <field name="category_id" ref="aqar_construction.aqar_construction"/>
+        </record>
+
+         <record id="confirm_construction" model="res.groups">
+            <field name="name">Confirm Construction</field>
+            <field name="category_id" ref="aqar_construction.aqar_construction"/>
+        </record>
+
+        <record id="create_accrual" model="res.groups">
+            <field name="name">Create Accrual</field>
+            <field name="category_id" ref="aqar_construction.aqar_construction"/>
+        </record>
+
+         <record id="approve_accrual" model="res.groups">
+            <field name="name">Approve Accrual</field>
+            <field name="category_id" ref="aqar_construction.aqar_construction"/>
+        </record>
+
+         <record id="confirm_accrual" model="res.groups">
+            <field name="name">Confirm Accrual</field>
+            <field name="category_id" ref="aqar_construction.aqar_construction"/>
+        </record>
+
+        <record id="create_vendor_billl" model="res.groups">
+            <field name="name">Create  Vendor Bill</field>
+            <field name="category_id" ref="aqar_construction.aqar_construction"/>
+        </record>
+
+
+    </data>
+</odoo>

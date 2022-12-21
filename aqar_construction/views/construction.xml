@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="construction_form" model="ir.ui.view">
+            <field name="name">Construction List</field>
+            <field name="model">aqar.construction</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+
+                        <button name="action_approve" type="object" string="Approve" class="oe_highlight" states="draft" groups="aqar_construction.approve_construction"/>
+                    <button name="action_create_accrual" type="object" string="Create Accrual" class="oe_highlight"
+                            attrs="{'invisible':['|',('accrual_id','!=',False),('state','!=','confirmed')]}"
+
+                            groups="aqar_construction.create_accrual"/>
+                    <button name="action_confirm" type="object" string="Confirm" class="oe_highlight" states="approve" groups="aqar_construction.create_vendor_billl"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,approve,confirmed" />
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="project_id" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                            <field name="project_code" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                            <field name="accrual_id"  attrs="{'readonly':[('state','=','confirmed')],'invisible':[('state','!=','confirmed')]}"/>
+                        </group>
+                        <notebook>
+
+                            <page string="Lines">
+                            <field name="lines" attrs="{'readonly':[('state','=','confirmed')]}">
+                                <tree editable="bottom">
+                                    <field name="item_select"/>
+                                    <field name="item_id"/>
+                                    <field name="planned_qty"/>
+                                    <field name="planned_price"/>
+                                    <field name="actual_qty"/>
+                                    <field name="actual_price"/>
+                                    <field name="prec_in_qty"/>
+                                    <field name="prec_in_price"/>
+                                    <field name="notes"/>
+                                </tree>
+                            </field>
+                        </page>
+                        </notebook>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="construction_tree" model="ir.ui.view">
+            <field name="name">Construction List</field>
+            <field name="model">aqar.construction</field>
+            <field name="arch" type="xml">
+                <tree string="_tree">
+                    <field name="project_id"/>
+                    <field name="project_code"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="construction_action" model="ir.actions.act_window">
+            <field name="name">Construction List</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">aqar.construction</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p>
+                <p>
+                    <!-- More details about what a user can do with this object will be OK -->
+                </p>
+            </field>
+        </record>
+        <menuitem id="construction_menu" name="Construction List" parent="aqar_construction_root"
+                  action="construction_action"/>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="edit_project" model="ir.ui.view">
+            <field name="name">project.project.form</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="project_code"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

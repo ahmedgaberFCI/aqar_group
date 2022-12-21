@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_aqar_construction,aqar_construction,model_aqar_construction,,1,1,1,1
+access_aqar_construction_line,aqar_construction_line,model_aqar_construction_line,,1,1,1,1
+access_aqar_accrual,aqar_accrual,model_aqar_accrual,,1,1,1,1
+access_aqar_accrual_line,aqar_accrual_line,model_aqar_accrual_line,,1,1,1,1

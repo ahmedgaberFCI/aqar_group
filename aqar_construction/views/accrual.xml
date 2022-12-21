@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="accrual_form" model="ir.ui.view">
+            <field name="name">Accrual</field>
+            <field name="model">aqar.accrual</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+
+                        <button name="action_approve" type="object" string="Approve" class="oe_highlight" states="draft"
+                                groups="aqar_construction.approve_accrual"/>
+                        <button name="action_confirm" type="object" string="Confirm" class="oe_highlight"
+                                states="approve" groups="aqar_construction.confirm_accrual"/>
+                        <button name="action_create_vendor_bill"
+                                attrs="{'invisible':['|',('bill_id','!=',False),('state','!=','confirmed')]}"
+                                type="object" string="Create Vendor Bill" class="oe_highlight"
+                                groups="aqar_construction.create_vendor_billl"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,approve,confirmed"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="partner_id" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                            <field name="date" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                            <field name="bill_id"
+                                   attrs="{'readonly':[('state','=','confirmed')],'invisible':[('state','!=','confirmed')]}"/>
+                        </group>
+                        <notebook>
+
+                            <page string="Lines">
+                                <field name="lines" attrs="{'readonly':[('state','=','confirmed')]}">
+                                    <tree editable="bottom">
+                                        <field name="item_id"/>
+                                        <field name="qty"/>
+                                        <field name="price"/>
+                                        <field name="total" sum="Total"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="accrual_tree" model="ir.ui.view">
+            <field name="name">Accrual</field>
+            <field name="model">aqar.accrual</field>
+            <field name="arch" type="xml">
+                <tree string="_tree">
+                    <field name="partner_id"/>
+                    <field name="date"/>
+                    <field name="bill_id"/>
+                </tree>
+            </field>
+        </record>
+        <record id="accrual_action" model="ir.actions.act_window">
+            <field name="name">Accrual</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">aqar.accrual</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p>
+                <p>
+                    <!-- More details about what a user can do with this object will be OK -->
+                </p>
+            </field>
+        </record>
+        <menuitem id="accrual_menu" name="Accrual" parent="aqar_construction_root" action="accrual_action"/>
+    </data>
+</odoo>
