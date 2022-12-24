@@ -22,6 +22,7 @@
                         <group>
                             <field name="partner_id" attrs="{'readonly':[('state','=','confirmed')]}"/>
                             <field name="date" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                            <field name="project_id"/>
                             <field name="bill_id"
                                    attrs="{'readonly':[('state','=','confirmed')],'invisible':[('state','!=','confirmed')]}"/>
                         </group>
@@ -30,7 +31,7 @@
                             <page string="Lines">
                                 <field name="lines" attrs="{'readonly':[('state','=','confirmed')]}">
                                     <tree editable="bottom">
-                                        <field name="item_id"/>
+                                        <field name="item_id" domain="[('is_property','=',False)]"/>
                                         <field name="qty"/>
                                         <field name="price"/>
                                         <field name="total" sum="Total"/>

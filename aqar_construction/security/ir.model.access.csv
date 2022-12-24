@@ -3,3 +3,7 @@ access_aqar_construction,aqar_construction,model_aqar_construction,,1,1,1,1
 access_aqar_construction_line,aqar_construction_line,model_aqar_construction_line,,1,1,1,1
 access_aqar_accrual,aqar_accrual,model_aqar_accrual,,1,1,1,1
 access_aqar_accrual_line,aqar_accrual_line,model_aqar_accrual_line,,1,1,1,1
+access_wiz_create_accrual,wiz_create_accrual,model_wiz_create_accrual,,1,1,1,1
+access_wiz_create_accrual_lines,wiz_create_accrual_lines,model_wiz_create_accrual_lines,,1,1,1,1
+access_wiz.create_extra,wiz.create_extra,model_wiz_create_extra,,1,1,1,1
+access_wiz.create_extra_lines,wiz.create_extra_lines,model_wiz_create_extra_lines,,1,1,1,1

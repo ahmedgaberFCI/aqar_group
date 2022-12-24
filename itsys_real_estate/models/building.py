@@ -175,6 +175,8 @@ class building(models.Model):
                         'building_id':self.id,
                         'floor':str(i),
                         'is_property': True,
+                        'sale_ok': False,
+                        'purchase_ok': False,
                         'pricing': self.pricing,
                     }
                     prop_id= property_pool.create(vals)

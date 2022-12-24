@@ -10,7 +10,12 @@
 
                         <button name="action_approve" type="object" string="Approve" class="oe_highlight" states="draft" groups="aqar_construction.approve_construction"/>
                     <button name="action_create_accrual" type="object" string="Create Accrual" class="oe_highlight"
-                            attrs="{'invisible':['|',('accrual_id','!=',False),('state','!=','confirmed')]}"
+                            attrs="{'invisible':[('state','!=','confirmed')]}"
+
+                            groups="aqar_construction.create_accrual"/>
+
+                         <button name="action_extra_lines" type="object" string="Create Extra Lines" class="oe_highlight"
+                            attrs="{'invisible':[('state','!=','confirmed')]}"
 
                             groups="aqar_construction.create_accrual"/>
                     <button name="action_confirm" type="object" string="Confirm" class="oe_highlight" states="approve" groups="aqar_construction.create_vendor_billl"/>
@@ -20,22 +25,23 @@
                         <group>
                             <field name="project_id" attrs="{'readonly':[('state','=','confirmed')]}"/>
                             <field name="project_code" attrs="{'readonly':[('state','=','confirmed')]}"/>
-                            <field name="accrual_id"  attrs="{'readonly':[('state','=','confirmed')],'invisible':[('state','!=','confirmed')]}"/>
                         </group>
                         <notebook>
 
                             <page string="Lines">
-                            <field name="lines" attrs="{'readonly':[('state','=','confirmed')]}">
+                            <field name="lines" >
                                 <tree editable="bottom">
                                     <field name="item_select"/>
-                                    <field name="item_id"/>
-                                    <field name="planned_qty"/>
-                                    <field name="planned_price"/>
-                                    <field name="actual_qty"/>
+                                    <field name="is_extra"/>
+                                    <field name="state" invisible="1"/>
+                                    <field name="item_id" attrs="{'readonly':[('state','=','confirmed')]}" domain="[('is_property','=',False)]"/>
+                                    <field name="planned_qty" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                    <field name="planned_price" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                                    <field name="actual_qty" />
                                     <field name="actual_price"/>
-                                    <field name="prec_in_qty"/>
-                                    <field name="prec_in_price"/>
-                                    <field name="notes"/>
+                                    <field name="prec_in_qty" />
+                                    <field name="prec_in_price" />
+                                    <field name="notes" attrs="{'readonly':[('state','=','confirmed')]}"/>
                                 </tree>
                             </field>
                         </page>

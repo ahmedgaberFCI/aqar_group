@@ -310,6 +310,10 @@
                         <field name="furniture"/>
                         <label for="furniture"/>
                     </div>
+                    <div>
+                        <field name="is_property"/>
+                        <label for="is_property"/>
+                    </div>
                 </div>
             </field>
         </record>
