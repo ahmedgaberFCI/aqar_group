@@ -22,7 +22,8 @@
                         <group>
                             <field name="partner_id" attrs="{'readonly':[('state','=','confirmed')]}"/>
                             <field name="date" attrs="{'readonly':[('state','=','confirmed')]}"/>
-                            <field name="project_id"/>
+                            <field name="building_id"/>
+                            <field name="building_code"/>
                             <field name="bill_id"
                                    attrs="{'readonly':[('state','=','confirmed')],'invisible':[('state','!=','confirmed')]}"/>
                         </group>

@@ -10,8 +10,8 @@
            <field name="arch" type="xml">
 
                <xpath expr="//field[@name='partner_id']" position="after">
-                   <field name="project_id"/>
-                   <field name="project_code"/>
+                   <field name="building_id"/>
+                   <field name="building_code"/>
                    <!-- Add your fields or attributes here -->
                </xpath>
 

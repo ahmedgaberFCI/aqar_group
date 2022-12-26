@@ -19,6 +19,7 @@
                             <page string="Lines">
                                 <field name="lines" >
                                     <tree editable="bottom">
+                                        <field name="construction_line_id" force_save="1" invisible="1"/>
                                         <field name="item_id"/>
                                         <field name="qty"/>
                                         <field name="price"/>

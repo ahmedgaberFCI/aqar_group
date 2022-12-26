@@ -24,6 +24,7 @@ class create_accrual(models.TransientModel):
                     'qty':line.qty,
                     'price':line.price,
                 }))
+                line.construction_line_id.write({'item_select':False})
         self.env['aqar.accrual'].create({'date':self.date,'lines':lines,'construction_id':self.construction_id.id,
                                          'partner_id':self.partner_id.id,
                                          'project_id':self.construction_id.project_id.id
@@ -35,6 +36,7 @@ class create_accrual(models.TransientModel):
 class create_accrual_lines(models.TransientModel):
     _name = 'wiz.create.accrual.lines'
     wiz_id=fields.Many2one(string='Item',required=True,comodel_name='wiz.create.accrual')
+    construction_line_id=fields.Many2one(comodel_name='aqar.construction.line')
     item_id=fields.Many2one(string='Item',required=True,comodel_name='product.product')
     qty=fields.Float(string='Quantity',required=False,readonly=False)
     price=fields.Float(string='Price',required=False,readonly=False)

@@ -10,9 +10,8 @@ class aqar_accrual(models.Model):
 	lines=fields.One2many(string='Lines',required=False,readonly=False, comodel_name='aqar.accrual.line',inverse_name="accrual_id")
 	state=fields.Selection(string='Status',selection=[('draft','Draft'),('approve','Approved'),('confirmed','Confirmed')],default='draft')
 	construction_id=fields.Many2one(string='Construction',copy=False,required=False,readonly=False,comodel_name='aqar.construction')
-	project_id = fields.Many2one(string='Project', required=True, readonly=True, comodel_name='project.project')
-	project_code = fields.Char(string='Project Code', related='project_id.project_code', store=True)
-
+	building_id=fields.Many2one(string='Project',required=True,readonly=False,comodel_name='building',related='construction_id.building_id',store=True)
+	building_code=fields.Char(string='Project Code',related='building_id.code',store=True)
 	def action_approve(self):
 		self.state='approve'
 
@@ -22,7 +21,7 @@ class aqar_accrual(models.Model):
 	def action_create_vendor_bill(self):
 		self.bill_id = self.env['account.move'].create({
 			'move_type': 'in_invoice',
-			'project_id': self.project_id.id,
+			'building_id': self.building_id.id,
 			'invoice_date':self.date,
 			'invoice_date_due':self.date,
 			'partner_id': self.partner_id.id,

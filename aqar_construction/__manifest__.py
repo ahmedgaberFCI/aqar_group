@@ -1,5 +1,5 @@
 {'name': "aqar_construction",
- 'depends': ['base','account','project','itsys_real_estate'],
+ 'depends': ['base','account','itsys_real_estate'],
  'data': [
      'security/groups.xml',
      'security/ir.model.access.csv',

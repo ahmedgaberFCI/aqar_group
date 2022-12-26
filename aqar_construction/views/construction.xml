@@ -23,18 +23,29 @@
                     </header>
                     <sheet>
                         <group>
-                            <field name="project_id" attrs="{'readonly':[('state','=','confirmed')]}"/>
-                            <field name="project_code" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                            <field name="building_id" attrs="{'readonly':[('state','=','confirmed')]}"/>
+                            <field name="building_code" attrs="{'readonly':[('state','=','confirmed')]}"/>
                         </group>
                         <notebook>
 
                             <page string="Lines">
-                            <field name="lines" >
+                            <field name="lines" widget="section_and_note_one2many">
                                 <tree editable="bottom">
+                                     <control>
+                                    <create name="add_product_control" string="Add a product"/>
+                                    <create name="add_note_control" string="Add a note" context="{'default_display_type': 'line_note'}"/>
+                                </control>
+
+                                    <field name="display_type" invisible="1"/>
                                     <field name="item_select"/>
                                     <field name="is_extra"/>
                                     <field name="state" invisible="1"/>
-                                    <field name="item_id" attrs="{'readonly':[('state','=','confirmed')]}" domain="[('is_property','=',False)]"/>
+                                    <field name="item_id"
+                                           force_save="1"
+
+
+                                           attrs="{'readonly':[('state','=','confirmed')],'required': [('display_type', '=', False)]}" domain="[('is_property','=',False)]"/>
+                                    <field name="name" widget="section_and_note_text" optional="show"/>
                                     <field name="planned_qty" attrs="{'readonly':[('state','=','confirmed')]}"/>
                                     <field name="planned_price" attrs="{'readonly':[('state','=','confirmed')]}"/>
                                     <field name="actual_qty" />
@@ -56,8 +67,8 @@
             <field name="model">aqar.construction</field>
             <field name="arch" type="xml">
                 <tree string="_tree">
-                    <field name="project_id"/>
-                    <field name="project_code"/>
+                    <field name="building_id"/>
+                    <field name="building_code"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -80,18 +91,7 @@
                   action="construction_action"/>
 
         <!-- Inherit Form View to Modify it -->
-        <record id="edit_project" model="ir.ui.view">
-            <field name="name">project.project.form</field>
-            <field name="model">project.project</field>
-            <field name="inherit_id" ref="project.edit_project"/>
-            <field name="arch" type="xml">
 
-                <xpath expr="//field[@name='partner_id']" position="after">
-                    <field name="project_code"/>
-                </xpath>
-
-            </field>
-        </record>
 
     </data>
 </odoo>
