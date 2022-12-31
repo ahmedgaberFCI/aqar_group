@@ -27,7 +27,7 @@ class create_accrual(models.TransientModel):
                 line.construction_line_id.write({'item_select':False})
         self.env['aqar.accrual'].create({'date':self.date,'lines':lines,'construction_id':self.construction_id.id,
                                          'partner_id':self.partner_id.id,
-                                         'project_id':self.construction_id.project_id.id
+                                         'building_id':self.construction_id.building_id.id
                                          })
 
 
