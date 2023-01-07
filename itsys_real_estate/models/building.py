@@ -30,6 +30,10 @@ class building(models.Model):
     def create(self, vals):
         vals['code'] = self.env['ir.sequence'].next_by_code('building')
         new_id = super(building, self).create(vals)
+        if not new_id.project_id:
+            new_id.project_id=self.env['project.project'].sudo().create({'name':new_id.name})
+        if not new_id.location_id:
+            new_id.location_id=self.env['stock.location'].sudo().create({'name':new_id.region_id.name or new_id.name ,'location_id':self.env.ref('stock.stock_location_stock').id})
         return new_id
 
     attach_line= fields.One2many("building.attachment.line", "building_attach_id", "Documents")
@@ -51,6 +55,8 @@ class building(models.Model):
     building_area= fields.Float   ('Property Area m²',compute='_calc_building_area',store=True)
     land_area= fields.Float   ('Land Area m²',)
     land_ratio= fields.Float   ('Load Ratio')
+    project_id = fields.Many2one(comodel_name='project.project',string='Project')
+    location_id = fields.Many2one(comodel_name='stock.location',string='Location')
 
     @api.onchange('type')
     def onchange_type(self):

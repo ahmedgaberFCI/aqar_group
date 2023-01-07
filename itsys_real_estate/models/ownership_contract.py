@@ -109,6 +109,7 @@ class ownership_contract(models.Model):
     partner_id= fields.Many2one('res.partner','Customer',required=True)
     building_area= fields.Integer ('Building Unit Area m²',)
     loan_line= fields.One2many('loan.line.rs.own', 'loan_id')
+    loan_line2= fields.One2many('loan.line.rs.own', 'loan_id2')
     region= fields.Many2one('regions','Region')
     state= fields.Selection([('draft','Draft'),
                              ('confirmed','Confirmed'),
@@ -283,7 +284,7 @@ class ownership_contract(models.Model):
                   'advance_payment','advance_payment_type')
     def onchange_tmpl(self):
         if self.template_id or 1==1:
-            # self.loan_line=[]
+            self.loan_line=[(5, 0, 0)]
             loan_lines=self._prepare_lines(self.date_payment)
             self.loan_line= loan_lines
 
@@ -324,6 +325,7 @@ class ownership_contract(models.Model):
         self.status =  self.reservation_id.status
         self.building_area =  self.reservation_id.building_area
         if self.template_id or 1==1:
+            self.loan_line = [(5, 0, 0)]
             loan_lines=self._prepare_lines(self.date_payment)
             self.loan_line= loan_lines
 
@@ -394,8 +396,14 @@ class ownership_contract(models.Model):
         return move_id
 
     def _prepare_lines(self,first_date):
-        # self.loan_line= None
+        self.loan_line = [(5, 0, 0)]
         loan_lines=[]
+        for line in self.loan_line2:
+            loan_lines.append((0,0,
+                               {'number': line.number, 'manaul': True, 'journal_id': line.journal_id.id, 'amount': line.amount, 'date': line.date,
+                                'name': line.name}
+                               ))
+
         if self.template_id or 1==1:
             ind=len(self.loan_line) or 1
             pricing = self.pricing
@@ -571,6 +579,7 @@ class loan_line_rs_own(models.Model):
     amount= fields.Float('Payment', digits='Product Price')
 
     loan_id= fields.Many2one('ownership.contract', '',ondelete='cascade', readonly=True)
+    loan_id2= fields.Many2one('ownership.contract', '',ondelete='cascade', readonly=True)
     status= fields.Char('Status')
     company_id= fields.Many2one('res.company', readonly=True,  default=lambda self: self.env.user.company_id.id)
 
@@ -582,6 +591,7 @@ class loan_line_rs_own(models.Model):
     invoice_state = fields.Selection(related='invoice_id.state', readonly=True,)
     amount_residual = fields.Monetary(related='invoice_id.amount_residual', readonly=True,)
     currency_id = fields.Many2one(related='invoice_id.currency_id', readonly=True)
+    manaul = fields.Boolean(string='Manaul')
 
     def send_multiple_installments(self):
         ir_model_data = self.env['ir.model.data']

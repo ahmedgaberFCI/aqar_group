@@ -31,13 +31,15 @@ class CreateManualPayment(models.TransientModel):
     def create_pay_lines(self):
         contract = self.env['ownership.contract'].browse(self._context.get('active_ids'))
         loan_lines=self.get_lines(contract)
-        contract.write({'loan_line':loan_lines})
+        contract.write({'loan_line2':loan_lines})
+        contract.onchange_tmpl()
 
 
 
     def get_lines(self,contract):
         ind = 1
         pricing = contract.pricing
+        pricing -= contract.advance_payment
         mon = self.duration_month
         yr = self.duration_year
         first_date = self.date
@@ -60,7 +62,7 @@ class CreateManualPayment(models.TransientModel):
         loan_amount = (pricing / float(mons)) * repetition
         m = 0
         while m < mons:
-            loan_lines.append((0, 0, {'number': ind, 'journal_id': int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.income_journal')),'amount': loan_amount, 'date': first_date, 'name': self.name or ''}))
+            loan_lines.append((0, 0, {'number': ind, 'manaul':True,'journal_id': int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.income_journal')),'amount': loan_amount, 'date': first_date, 'name': self.name or ''}))
             ind += 1
             first_date = self.add_months(first_date, repetition)
             m += repetition

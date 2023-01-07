@@ -19,7 +19,7 @@
       """,
     'author':'Fatma Yousef',
     'website':'https://www.i-datatech.com',
-    'depends':['base','account','analytic'],
+    'depends':['base','account','analytic','project','stock'],
     'data':[
         'security/real_estate_security.xml',
         'security/ir.model.access.csv',

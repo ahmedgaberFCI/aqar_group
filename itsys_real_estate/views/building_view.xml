@@ -29,6 +29,8 @@
                                 <field name="partner_id"
                                  context="{'res_partner_search_mode': 'is_owner', 'default_is_owner':True,}"
                                  domain="[('is_owner','=',True)]"/>
+                                <field name="project_id" readonly="1"/>
+                                <field name="location_id" readonly="1"/>
                             </group>
                             <group>
                                 <label for="street" string="Address"/>
