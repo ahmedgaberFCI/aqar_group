@@ -398,7 +398,7 @@ class ownership_contract(models.Model):
         loan_lines=[]
         for line in self.loan_line2:
             loan_lines.append((0,0,
-                               {'number': line.number,'add_amount':True, 'manaul': True, 'journal_id': line.journal_id.id, 'amount': line.amount, 'date': line.date,
+                               {'number': line.number,'add_amount':line.add_amount, 'manaul': True, 'journal_id': line.journal_id.id, 'amount': line.amount, 'date': line.date,
                                 'name': line.name}
                                ))
 
