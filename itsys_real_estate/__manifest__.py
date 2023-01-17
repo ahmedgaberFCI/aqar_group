@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name':'Real Estate.',
-    'version':'4.0',
+    'version':'1.0',
     'category':'Real Estate',
     'sequence':14,
     'summary':'',
