@@ -12,6 +12,9 @@
                             <field name="name" default_focus="1" placeholder="Name"/>
                         </h1>
                         <group>
+                            <field name="type" />
+                            <field name="amount_type" attrs="{'readonly': [('duration_year','>', '0')],'invisible': [('type','=', 'inst')]}"/>
+                            <field name="amount" attrs="{'readonly': [('duration_year','>', '0')],'invisible': [('type','=', 'inst')]}"/>
                             <field name="duration_month" attrs="{'readonly': [('duration_year','>', '0')]}"/>
                             <field name="duration_year" attrs="{'readonly': [('duration_month','>', '0')]}"/>
                             <field name="date"/>

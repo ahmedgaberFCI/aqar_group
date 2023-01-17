@@ -60,8 +60,11 @@ class ownership_contract(models.Model):
         total_paid = 0
         total_nonpaid = 0
         amount_total= 0
+        amount_total2= 0
         for rec in self:
             for line in rec.loan_line:
+                if line.add_amount:
+                    amount_total2+= line.amount
                 amount_total+= line.amount
                 total_nonpaid+= line.amount_residual
                 total_paid+= (line.amount-line.amount_residual)
@@ -69,6 +72,7 @@ class ownership_contract(models.Model):
         self.paid = total_paid
         self.balance = total_nonpaid
         self.amount_total=amount_total
+        self.amount_total2=amount_total2
 
 
     def _voucher_count(self):
@@ -86,6 +90,7 @@ class ownership_contract(models.Model):
     paid= fields.Float(compute='_check_amounts', string='Paid',)
     balance= fields.Float(compute='_check_amounts', string='Balance',)
     amount_total= fields.Float(compute='_check_amounts', string='Total',)
+    amount_total2= fields.Float(compute='_check_amounts', string='Total',)
     #ownership_contract Info
     name= fields.Char    ('Name', size=64,readonly=True)
     reservation_id=  fields.Many2one('unit.reservation','Reservation')
@@ -158,14 +163,7 @@ class ownership_contract(models.Model):
     @api.constrains('loan_line','pricing')
     def check_loan_line(self):
         for rec in self:
-            other = rec.other if rec.other_type == 'amount' else (rec.pricing) * (rec.other / 100)
-            maintenance = rec.maintenance if rec.maintenance_type == 'amount' else (rec.pricing) * (rec.maintenance / 100)
-            club = rec.club if rec.club_type == 'amount' else (rec.pricing) * (rec.club / 100)
-            garage = rec.garage if rec.garage_type == 'amount' else (rec.pricing) * (rec.garage / 100)
-            elevator = rec.elevator if rec.elevator_type == 'amount' else (rec.pricing) * (rec.elevator / 100)
-            pricing= rec.pricing+other+maintenance+club+garage+elevator
-
-            if rec.amount_total>pricing:
+            if rec.amount_total2>rec.pricing:
                 raise ValidationError("الاقساط آكبر من سعر الوحدة")
 
 
@@ -400,7 +398,7 @@ class ownership_contract(models.Model):
         loan_lines=[]
         for line in self.loan_line2:
             loan_lines.append((0,0,
-                               {'number': line.number, 'manaul': True, 'journal_id': line.journal_id.id, 'amount': line.amount, 'date': line.date,
+                               {'number': line.number,'add_amount':True, 'manaul': True, 'journal_id': line.journal_id.id, 'amount': line.amount, 'date': line.date,
                                 'name': line.name}
                                ))
 
@@ -410,7 +408,7 @@ class ownership_contract(models.Model):
             custom_adv_payment=self.advance_payment if self.advance_payment_type=='amount' else (pricing*(self.advance_payment/100))
             if custom_adv_payment>0:
                 pricing -= custom_adv_payment
-                loan_lines.append((0, 0, {'number': ind, 'journal_id': self.env['ir.config_parameter'].sudo().get_param(
+                loan_lines.append((0, 0, {'number': ind,'add_amount':True, 'journal_id': self.env['ir.config_parameter'].sudo().get_param(
                     'itsys_real_estate.income_journal'), 'amount': custom_adv_payment, 'date': first_date,
                                           'name': _('دفعة التعاقد')}))
                 ind += 1
@@ -429,14 +427,14 @@ class ownership_contract(models.Model):
                     mon=(x*12)+mon%12
                 mons=mon+(yr*12)
                 if adv_payment:
-                    loan_lines.append((0,0,{'number':ind,'journal_id':int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.income_journal')),'amount':adv_payment,'date': first_date, 'name':_('Advance Payment')}))
+                    loan_lines.append((0,0,{'number':ind,'add_amount':True,'journal_id':int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.income_journal')),'amount':adv_payment,'date': first_date, 'name':_('Advance Payment')}))
                     ind+=1
                     if deduct:
                         pricing-=adv_payment
                 loan_amount=(pricing/float(mons))*repetition
                 m=0
                 while m<mons:
-                    loan_lines.append((0,0,{'number':ind,'journal_id':int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.income_journal')),
+                    loan_lines.append((0,0,{'number':ind,'add_amount':True,'journal_id':int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.income_journal')),
                                             'amount':loan_amount,'date': first_date,'name':_('Loan Installment')}))
                     ind+=1
                     first_date = self.add_months(first_date, repetition)
@@ -592,6 +590,7 @@ class loan_line_rs_own(models.Model):
     amount_residual = fields.Monetary(related='invoice_id.amount_residual', readonly=True,)
     currency_id = fields.Many2one(related='invoice_id.currency_id', readonly=True)
     manaul = fields.Boolean(string='Manaul')
+    add_amount = fields.Boolean()
 
     def send_multiple_installments(self):
         ir_model_data = self.env['ir.model.data']
