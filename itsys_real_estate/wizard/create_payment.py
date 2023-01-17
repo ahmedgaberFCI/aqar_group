@@ -44,7 +44,7 @@ class CreateManualPayment(models.TransientModel):
     def create_pay_lines(self):
         contract = self.env['ownership.contract'].browse(self._context.get('active_ids'))
         loan_lines=self.get_lines(contract)
-        contract.loan_line2=[(5, 0, 0)]
+        # contract.loan_line2=[(5, 0, 0)]
         contract.loan_line2=loan_lines
         contract.onchange_tmpl()
 
@@ -84,7 +84,9 @@ class CreateManualPayment(models.TransientModel):
         while m < mons:
 
             if self.type=='inst':
-                loan_lines.append((0, 0, {'number': ind,'add_amount':True, 'manaul':True,'journal_id': int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.income_journal')),'amount': loan_amount, 'date': first_date, 'name': self.name or ''}))
+                loan_lines.append((0, 0, {'number': ind,'add_amount':True, 'manaul':True,
+                                          'journal_id': int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.income_journal')),
+                                          'amount': loan_amount, 'date': first_date, 'name': self.name or ''}))
             if self.type == 'maintenance':
                 loan_lines.append((0, 0, {'number': ind, 'add_amount': True, 'manaul': True, 'journal_id': int(
                     self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.maintenance_journal')),

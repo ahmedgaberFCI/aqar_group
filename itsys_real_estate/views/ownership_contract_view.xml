@@ -204,6 +204,32 @@
                                     <field name="balance"/>
                                 </group>
                             </page>
+                            <page string="Manaul Installments">
+                                <field name="loan_line2" attrs="{'readonly': [('state','!=','draft')]}">
+                                    <tree string="Manaul Installments" editable="bottom">
+                                        <field name="number"/>
+                                        <field name="date" required="1"/>
+                                        <field name="name" required="1" style="font-weight: bold;"/>
+                                        <field name="amount" required="1" />
+                                        <field name="amount_residual"/>
+                                        <field name="invoice_id" readonly="1"/>
+                                        <field name="journal_id" force_save="1" readonly="1"/>
+                                        <field name="invoice_state" widget="badge" decoration-success="invoice_state == 'posted'"
+                                               decoration-info="invoice_state == 'draft'" optional="show"/>
+                                        <field name="payment_state" widget="badge"
+                                               decoration-danger="payment_state == 'not_paid'" decoration-warning="payment_state in ('partial', 'in_payment')"
+                                               decoration-success="payment_state in ('paid', 'reversed')"
+                                               attrs="{'invisible': [('payment_state', 'in', ('invoicing_legacy'))]}"/>
+                                        <button string="View Invoice" name="view_invoice" type="object" style="background-color:rgba(0, 160, 74, 0.5);color: #333;"
+                                                attrs="{'invisible': [('invoice_id','=',False)]}" groups="itsys_real_estate.group_payments"/>
+                                    </tree>
+                                </field>
+                                <group>
+                                    <field name="amount_total"/>
+                                    <field name="paid"/>
+                                    <field name="balance"/>
+                                </group>
+                            </page>
                             <page string="Documents">
                                 <field name="attach_line">
                                     <tree editable="bottom">
