@@ -88,23 +88,23 @@ class CreateManualPayment(models.TransientModel):
                                           'journal_id': int(self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.income_journal')),
                                           'amount': loan_amount, 'date': first_date, 'name': self.name or ''}))
             if self.type == 'maintenance':
-                loan_lines.append((0, 0, {'number': ind, 'add_amount': True, 'manaul': True, 'journal_id': int(
+                loan_lines.append((0, 0, {'number': ind, 'add_amount': False, 'manaul': True, 'journal_id': int(
                     self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.maintenance_journal')),
                                           'amount': loan_amount, 'date': first_date, 'name': self.name or 'وديعة صيانة'}))
             if self.type == 'club':
-                loan_lines.append((0, 0, {'number': ind, 'add_amount': True, 'manaul': True, 'journal_id': int(
+                loan_lines.append((0, 0, {'number': ind, 'add_amount': False, 'manaul': True, 'journal_id': int(
                     self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.club_journal')),
                                           'amount': loan_amount, 'date': first_date, 'name': self.name or 'تصرفات عقارية'}))
             if self.type == 'garage':
-                loan_lines.append((0, 0, {'number': ind, 'add_amount': True, 'manaul': True, 'journal_id': int(
+                loan_lines.append((0, 0, {'number': ind, 'add_amount': False, 'manaul': True, 'journal_id': int(
                     self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.garage_journal')),
                                           'amount': loan_amount, 'date': first_date, 'name': self.name or 'تشطبات'}))
             if self.type == 'elevator':
-                loan_lines.append((0, 0, {'number': ind, 'add_amount': True, 'manaul': True, 'journal_id': int(
+                loan_lines.append((0, 0, {'number': ind, 'add_amount': False, 'manaul': True, 'journal_id': int(
                     self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.elevator_journal')),
                                           'amount': loan_amount, 'date': first_date, 'name': self.name or 'تآمين آعمال'}))
             if self.type == 'other':
-                loan_lines.append((0, 0, {'number': ind, 'add_amount': True, 'manaul': True, 'journal_id': int(
+                loan_lines.append((0, 0, {'number': ind, 'add_amount': False, 'manaul': True, 'journal_id': int(
                     self.env['ir.config_parameter'].sudo().get_param('itsys_real_estate.other_journal')),
                                           'amount': loan_amount, 'date': first_date, 'name': self.name or 'مرافق'}))
 
