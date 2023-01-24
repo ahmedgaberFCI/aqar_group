@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <template id="payment_receipt_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <div class="page" dir="rtl">
+                            <div class="row">
+                                <div class="col-4 text-right">
+                                </div>
+                                <div class="col-4">
+                                    <center>
+                                        <t t-if="doc.payment_type=='outbound'">
+                                            <span style="font-size:20pt;color:black;font-weight: bold;">اذن صرف نقدية
+                                            </span>
+                                        </t>
+                                        <t t-else="">
+                                            <span style="font-size:20pt;color:black;font-weight: bold;">اذن استلام
+                                                نقدية
+                                            </span>
+                                        </t>
+                                        <br/>
+                                        <span style="font-size:20pt;color:black;font-weight: bold;">(نقدية / شيك)</span>
+                                    </center>
+
+
+                                </div>
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <center>
+                                                <t t-if="doc.currency_id.id==request.env.ref('base.USD').id">
+                                                    <strong style="font-size:20pt">Cents</strong>
+                                                </t>
+                                                <t t-else="">
+                                                    <strong style="font-size:20pt">قرش</strong>
+                                                </t>
+
+                                                <br/>
+                                                <strong style="font-size:20pt">
+                                                    <t t-esc="str(round(doc.amount-int(doc.amount),2)).replace('0.','')"/>
+                                                </strong>
+                                            </center>
+
+
+                                        </div>
+                                        <div class="col-6">
+                                            <center>
+                                                <t t-if="doc.currency_id.id==request.env.ref('base.USD').id">
+                                                    <strong style="font-size:20pt">Dollor</strong>
+
+                                                </t>
+                                                <t t-else="">
+                                                    <strong style="font-size:20pt">‫جنـيـه‬</strong>
+                                                </t>
+                                                <br/>
+
+                                                <strong style="font-size:20pt">
+                                                    <t t-esc="int(doc.amount)"/>
+                                                </strong>
+
+                                            </center>
+
+                                        </div>
+                                    </div>
+                                    <center>
+
+                                    </center>
+
+                                </div>
+                            </div>
+                            <br/>
+                            <table class="table" dir="rtl">
+                                <tbody>
+                                    <tr>
+
+                                        <t t-if="doc.payment_type=='inbound'">
+                                            <th class="text-right">إستلمنا من:</th>
+                                        </t>
+                                        <t t-else="">
+                                            <th class="text-right">إستلم السيد:</th>
+                                        </t>
+
+                                        <th class="text-right" colspan="3">
+                                            <t t-esc="doc.partner_id.name"/>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right">رقم قومي:</th>
+                                        <th class="text-right" colspan="3">
+                                            <t t-esc="doc.national_id"/>
+                                        </th>
+
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right">مبلغ وقدرة</th>
+                                        <th class="text-right" colspan="2">
+                                            <t t-esc="doc.anly_world"/>
+                                        </th>
+                                        <th>
+                                            <span>فقط لا غير</span>
+                                        </th>
+
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right">نقدا بشيك رقم:</th>
+                                        <th class="text-right">
+                                            حق
+
+                                        </th>
+                                        <th class="text-right">مسحوب من بنك:</th>
+                                        <th class="text-right">
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right">وذلك نظير</th>
+                                        <th class="text-right" colspan="3">
+                                            <t t-esc="doc.ref"/>
+                                        </th>
+
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right">تحريرا في:</th>
+                                        <th class="text-right" colspan="3">
+                                            <t t-esc="doc.date"/>
+                                        </th>
+
+                                    </tr>
+                                    <tr>
+                                        <th colspan="4"></th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="4"></th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right">توقيع المستلم</th>
+                                        <th class="text-right">‫آميـن‬ ‫الخـزينـة‬</th>
+                                        <th class="text-right">‫يعـتــمـــد‬</th>
+                                        <th class="text-right">
+                                            <div style=" height: 100px;width: 100px;border-style: solid;">
+
+                                            </div>
+                                        </th>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </t>
+                    <br/>
+
+
+                </t>
+
+            </t>
+
+        </template>
+        <report
+                id="action_payment_receipt_report"
+                model="account.payment"
+                report_type="qweb-pdf"
+                string="اذن صرف واستلام نقدية"
+                print_report_name="(object.name)"
+                name="majestic_payment.payment_receipt_template"
+                file="majestic_payment.payment_receipt_template"
+                menu="False"
+        />
+
+
+    </data>
+</odoo>

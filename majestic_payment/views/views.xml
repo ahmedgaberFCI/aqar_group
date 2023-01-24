@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <record id="view_account_payment_form" model="ir.ui.view">
+            <field name="name">account.payment.form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_type']" position="after">
+                    <field name="is_expense"
+
+                           attrs="{'readonly': [('state', '!=', 'draft')],'invisible':[('payment_type', '!=', 'outbound')],}"/>
+                    <field name="is_other" attrs="{'invisible':[('payment_type', '!=', 'inbound')]}"/>
+                    <field name="label"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_bank_id']" position="after">
+                    <!-- Add your fields or attributes here -->
+                    <field name="other_account" attrs="{'invisible':[('is_expense', '=', True)]}"/>
+                    <field name="check_number" attrs="{'invisible':[('is_check', '!=', True)]}"/>
+                    <field name="due_date" attrs="{'invisible':[('is_check', '!=', True)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='is_internal_transfer']" position="before">
+                    <!-- Add your fields or attributes here -->
+                    <field name="is_check"
+                           attrs="{'invisible': ['|', '&amp;', ('is_other','=', True),('is_expense', '=',
+                    True),('is_internal_transfer', '=', True)]}"/>
+
+                </xpath>
+                <xpath expr="//field[@name='is_internal_transfer']" position="attributes">
+                    <attribute name="attrs">{'readonly': ['|',('is_expense', '=', True),('state', '!=', 'draft')]}
+                    </attribute>
+
+                </xpath>
+                <xpath expr="//field[@name='payment_type']" position="attributes">
+                    <attribute name="attrs">{'readonly': ['|',('is_expense', '=', True),('state', '!=', 'draft')]}
+                    </attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="attrs">{'readonly': ['|','|',('is_expense', '=', True),('state', '!=',
+                        'draft'),('is_other', '=', True)]}
+                    </attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_bank_id']" position="before">
+                    <field name="account_expense"
+                           attrs="{'invisible':[('is_expense','!=',True),('is_other','=',True)],
+                               'readonly':[('state', '!=', 'draft')],
+                               'required':[('is_expense','=',True)]
+                               }"/>
+                    <field name="national_id" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                    <field name="anly_world" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                </xpath>
+
+                <xpath expr="//div[@class='oe_button_box']" position="inside">
+                    <button name="print_payment_receipt" type="object" class="oe_stat_button" icon="fa-bars"
+                            attrs="{'invisible': [('payment_type','not in', ['inbound','outbound'])]}">
+                        <span attrs="{'invisible': [('payment_type','=','inbound')]}">اذن صرف نقدية</span>
+                        <span attrs="{'invisible': [('payment_type','=','outbound')]}">اذن استلام نقدية</span>
+                    </button>
+                </xpath>
+
+            </field>
+        </record>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_move_form" model="ir.ui.view">
+            <field name="name">account.move</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='ref']" position="after">
+                    <field name="check_number"/>
+                    <field name="due_date"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+    </data>
+</odoo>
