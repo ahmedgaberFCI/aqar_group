@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, _
-from odoo.exceptions import UserError, ValidationError
+from odoo import api, fields, models, Command, _
+from odoo.exceptions import RedirectWarning, UserError, ValidationError, AccessError
+from odoo.tools.misc import formatLang, format_date, get_lang
 from num2words import num2words
 
 
@@ -44,7 +45,7 @@ class InheritPayment(models.Model):
                     else:
                         pay.destination_account_id = self.env['account.account'].search([
                             ('company_id', '=', pay.company_id.id),
-                            ('internal_type', '=', 'receivable'),
+                            ('internal_type', '=', 'asset_receivable'),
                             ('deprecated', '=', False),
                         ], limit=1)
                 elif pay.partner_type == 'supplier':
@@ -55,7 +56,7 @@ class InheritPayment(models.Model):
                     else:
                         pay.destination_account_id = self.env['account.account'].search([
                             ('company_id', '=', pay.company_id.id),
-                            ('internal_type', '=', 'payable'),
+                            ('internal_type', '=', 'liability_payable'),
                             ('deprecated', '=', False),
                         ], limit=1)
 
@@ -77,12 +78,12 @@ class InheritPayment(models.Model):
         writeoff_lines = self.env['account.move.line']
 
         for line in self.move_id.line_ids:
-            print("S>>>>>>>>>>...", line.account_id.internal_type)
+            print("S>>>>>>>>>>...", line.account_id.account_type)
 
             if line.account_id in self._get_valid_liquidity_accounts():
                 liquidity_lines += line
-            elif line.account_id.internal_type in (
-                    'receivable', 'payable', 'other') or line.partner_id == line.company_id.partner_id:
+            elif line.account_id.account_type in (
+                    'asset_receivable', 'liability_payable', 'income_other') or line.partner_id == line.company_id.partner_id:
                 counterpart_lines += line
             else:
                 writeoff_lines += line
@@ -249,6 +250,28 @@ class InheritPayment(models.Model):
         return self.env.ref('majestic_payment.action_payment_receipt_report').report_action(self, data={}, config=False)
 
 
+
+class AccountMoveLine(models.Model):
+    _inherit='account.move.line'
+
+    @api.model
+    def _get_default_line_name(self, document, amount, currency, date, partner=None):
+        ''' Helper to construct a default label to set on journal items.
+
+        E.g. Vendor Reimbursement $ 1,555.00 - Azure Interior - 05/14/2020.
+
+        :param document:    A string representing the type of the document.
+        :param amount:      The document's amount.
+        :param currency:    The document's currency.
+        :param date:        The document's date.
+        :param partner:     The optional partner.
+        :return:            A string.
+        '''
+        values = ['%s %s' % (document, formatLang(self.env, amount, currency_obj=currency))]
+        if partner:
+            values.append(partner.display_name)
+        values.append(format_date(self.env, fields.Date.to_string(date)))
+        return ' - '.join(values)
 
 class AccountMove(models.Model):
     _inherit='account.move'
