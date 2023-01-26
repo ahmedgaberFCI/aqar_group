@@ -158,16 +158,26 @@
             </t>
 
         </template>
-        <report
-                id="action_payment_receipt_report"
-                model="account.payment"
-                report_type="qweb-pdf"
-                string="اذن صرف واستلام نقدية"
-                print_report_name="(object.name)"
-                name="majestic_payment.payment_receipt_template"
-                file="majestic_payment.payment_receipt_template"
-                menu="False"
-        />
+<!--        <report-->
+<!--                id="action_payment_receipt_report"-->
+<!--                model="account.payment"-->
+<!--                report_type="qweb-pdf"-->
+<!--                string="اذن صرف واستلام نقدية"-->
+<!--                print_report_name="(object.name)"-->
+<!--                name="majestic_payment.payment_receipt_template"-->
+<!--                file="majestic_payment.payment_receipt_template"-->
+<!--                menu="False"-->
+<!--        />-->
+
+        <record id="action_payment_receipt_report" model="ir.actions.report">
+            <field name="name">اذن صرف واستلام نقدية</field>
+            <field name="model">account.payment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">majestic_payment.payment_receipt_template</field>
+            <field name="report_file">majestic_payment.payment_receipt_template</field>
+            <field name="binding_model_id" ref="account.model_account_payment"/>
+            <field name="binding_type">report</field>
+        </record>
 
 
     </data>

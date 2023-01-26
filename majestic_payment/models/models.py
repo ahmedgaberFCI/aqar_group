@@ -11,12 +11,12 @@ class InheritPayment(models.Model):
     _description = 'Inherit Payment'
 
     is_expense = fields.Boolean(string="Send To", )
-    account_expense = fields.Many2one("account.account", string="Account", required=False, )
+    account_expense = fields.Many2one("account.account", string="Account", required=False, domain="[('account_type', 'in', ('asset_receivable', 'liability_payable'))]")
     national_id = fields.Char(string="National Id", required=False, )
     anly_world = fields.Char(string="فقط لا غير", required=False, )
     label = fields.Char(string="Label", required=False, )
     is_other = fields.Boolean(string="Receive From", )
-    other_account = fields.Many2one(comodel_name="account.account", string="Account Credit", required=False, )
+    other_account = fields.Many2one(comodel_name="account.account", string="Account Credit", required=False, domain="[('account_type', 'in', ('asset_receivable', 'liability_payable'))]")
     is_check = fields.Boolean(string="Is Check", )
     check_number = fields.Char(string="Check Number", required=False, )
     due_date = fields.Date(string="Due Date", required=False, )
@@ -35,30 +35,54 @@ class InheritPayment(models.Model):
 
             else:
                 if pay.is_internal_transfer:
-                    pay.destination_account_id = pay.journal_id.company_id.transfer_account_id
+                    # pay.destination_account_id = pay.journal_id.company_id.transfer_account_id
+                    pay.destination_account_id = pay.destination_journal_id.company_id.transfer_account_id
 
                 elif pay.partner_type == 'customer':
-                    # Receive money from invoice or send money to refund it.
+
                     if pay.partner_id:
                         pay.destination_account_id = pay.partner_id.with_company(
                             pay.company_id).property_account_receivable_id
                     else:
                         pay.destination_account_id = self.env['account.account'].search([
                             ('company_id', '=', pay.company_id.id),
-                            ('internal_type', '=', 'asset_receivable'),
+                            ('account_type', '=', 'asset_receivable'),
                             ('deprecated', '=', False),
                         ], limit=1)
+                    # Receive money from invoice or send money to refund it.
+
+                    # if pay.partner_id:
+                    #     pay.destination_account_id = pay.partner_id.with_company(
+                    #         pay.company_id).property_account_receivable_id
+                    # else:
+                    #     pay.destination_account_id = self.env['account.account'].search([
+                    #         ('company_id', '=', pay.company_id.id),
+                    #         ('internal_type', '=', 'asset_receivable'),
+                    #         ('deprecated', '=', False),
+                    #     ], limit=1)
+
+
                 elif pay.partner_type == 'supplier':
-                    # Send money to pay a bill or receive money to refund it.
                     if pay.partner_id:
                         pay.destination_account_id = pay.partner_id.with_company(
                             pay.company_id).property_account_payable_id
                     else:
                         pay.destination_account_id = self.env['account.account'].search([
                             ('company_id', '=', pay.company_id.id),
-                            ('internal_type', '=', 'liability_payable'),
+                            ('account_type', '=', 'liability_payable'),
                             ('deprecated', '=', False),
                         ], limit=1)
+                    # Send money to pay a bill or receive money to refund it.
+
+                    # if pay.partner_id:
+                    #     pay.destination_account_id = pay.partner_id.with_company(
+                    #         pay.company_id).property_account_payable_id
+                    # else:
+                    #     pay.destination_account_id = self.env['account.account'].search([
+                    #         ('company_id', '=', pay.company_id.id),
+                    #         ('internal_type', '=', 'liability_payable'),
+                    #         ('deprecated', '=', False),
+                    #     ], limit=1)
 
     def amount_to_text(self):
         convert_amount_in_words = num2words(abs(self.amount), lang='ar')
