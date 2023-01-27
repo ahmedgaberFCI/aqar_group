@@ -21,7 +21,9 @@ class InheritPayment(models.Model):
     check_number = fields.Char(string="Check Number", required=False, )
     due_date = fields.Date(string="Due Date", required=False, )
 
+    doc_no = fields.Char(string="Doc NO / رقم الايصال", required=False, )
 
+    building_id = fields.Many2one('building', "Project", index=True, ondelete='cascade')
 
     @api.depends('journal_id', 'partner_id', 'partner_type', 'is_internal_transfer', 'is_expense', 'account_expense',
                  'is_other', 'other_account')
@@ -385,11 +387,18 @@ class AccountMove(models.Model):
     check_number = fields.Char(string="Check Number",compute='_calc_check_number',store=True )
     due_date = fields.Date(string="Due Date", required=False,compute='_calc_check_number',store=True )
 
+    doc_no = fields.Char(string="Doc NO / رقم الايصال", stored=True, related='payment_id.doc_no',)
+
+    # payment_building_id = fields.Many2one('building', "Project",compute='_calc_check_number')
+
     @api.depends('payment_id')
     def _calc_check_number(self):
         for rec in self:
+
             if rec.check_number:
                 rec.check_number = rec.payment_id.check_number
             if rec.due_date:
                 rec.due_date = rec.payment_id.due_date
+
+            rec.building_id = rec.payment_id.building_id.id
 

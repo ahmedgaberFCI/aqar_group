@@ -19,6 +19,8 @@
                     <field name="other_account" attrs="{'invisible':[('is_expense', '=', True)]}"/>
                     <field name="check_number" attrs="{'invisible':[('is_check', '!=', True)]}"/>
                     <field name="due_date" attrs="{'invisible':[('is_check', '!=', True)]}"/>
+                    <field name="doc_no"/>
+                    <field name="building_id"/>
                 </xpath>
                 <xpath expr="//field[@name='is_internal_transfer']" position="before">
                     <!-- Add your fields or attributes here -->
@@ -72,6 +74,7 @@
                 <xpath expr="//field[@name='ref']" position="after">
                     <field name="check_number"/>
                     <field name="due_date"/>
+                    <field name="doc_no"/>
                 </xpath>
 
             </field>
